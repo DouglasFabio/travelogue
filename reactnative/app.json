@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "reactnative",
-    "slug": "reactnative",
+    "name": "Aplicativo React Native - AV DM2",
+    "slug": "appreactnativedm2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
