@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   date_field: ^3.0.5
+  provider:
 
 dev_dependencies:
   flutter_test:
