@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travelogue/provider/travels.dart';
+import 'package:travelogue/routes/app_routes.dart';
 import 'package:travelogue/views/travel_list.dart';
 
 void main() {
@@ -19,6 +20,9 @@ class MainApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: TravelList(),
+        routes: {
+          AppRoutes.USER_FORM:
+        },
       ),
     );
   }
