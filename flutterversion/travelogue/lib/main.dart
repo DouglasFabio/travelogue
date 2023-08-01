@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:travelogue/provider/travels.dart';
 import 'package:travelogue/views/travel_list.dart';
 
 void main() {
@@ -8,13 +10,16 @@ void main() {
 class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      title: 'Travelogue Dev Mob. II',
-      theme: ThemeData(
-        primarySwatch: Colors.cyan,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return ChangeNotifierProvider(
+      create: (context) => TravelsProvider(), 
+      child: MaterialApp(
+        title: 'Travelogue Dev Mob. II',
+        theme: ThemeData(
+          primarySwatch: Colors.cyan,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: TravelList(),
       ),
-      home: TravelList(),
     );
   }
 }

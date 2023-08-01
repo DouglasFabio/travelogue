@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:travelogue/components/travel_tile.dart';
-import 'package:travelogue/data/dummy_travels.dart';
 
 class TravelList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final travels = {...DUMMY_TRAVELS};
+    final travels = Provider.of(context);
 
     return Scaffold(
       appBar: AppBar(
