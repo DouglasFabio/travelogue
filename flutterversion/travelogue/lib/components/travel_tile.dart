@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travelogue/models/travel.dart';
+import 'package:travelogue/routes/app_routes.dart';
 
 class TravelTile extends StatelessWidget {
 
@@ -16,7 +17,12 @@ class TravelTile extends StatelessWidget {
         child:Row( 
           children: <Widget>[
             IconButton(
-              onPressed: () => {}, 
+              onPressed: () => {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.TRAVEL_FORM,
+                  arguments: travel,
+                )
+              }, 
               icon: Icon(Icons.edit),
               color: Colors.blue,
             ),
