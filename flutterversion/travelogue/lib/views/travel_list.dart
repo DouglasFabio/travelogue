@@ -7,7 +7,7 @@ import 'package:travelogue/routes/app_routes.dart';
 
 class TravelList extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     final TravelsProvider travels = Provider.of(context);
 
     return Scaffold(

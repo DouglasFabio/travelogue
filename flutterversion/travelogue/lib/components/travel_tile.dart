@@ -11,7 +11,7 @@ class TravelTile extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(child: Icon(Icons.card_travel)),
       title: Text(travel.name),
-      subtitle: Text(travel.travel_date),
+      subtitle: Text(travel.travelDate),
       trailing: Container(
         width: 100,
         child:Row( 

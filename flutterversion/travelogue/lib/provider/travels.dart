@@ -27,13 +27,13 @@ class TravelsProvider with ChangeNotifier {
 
     // Se o ID estiver preenchido, ou existir na lista, então UPDATE.
     if(travel.id != null && travel.id.trim().isNotEmpty && _items.containsKey(travel.id)){
-      _items.update(travel.id, (_) => Travel(name: travel.name, travel_date: travel.travel_date));
+      _items.update(travel.id, (_) => Travel(id: travel.id, name: travel.name, travelDate: travel.travelDate));
     }else{
       final id = Random().nextDouble().toString();
       _items.putIfAbsent(id, () => Travel(
         id: id, 
         name: travel.name, 
-        travel_date: travel.travel_date
+        travelDate: travel.travelDate
         )
       );
     }
