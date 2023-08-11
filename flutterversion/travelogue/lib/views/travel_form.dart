@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mongo_dart/mongo_dart.dart';
 import 'package:provider/provider.dart';
 import 'package:travelogue/models/travel.dart';
 import 'package:travelogue/provider/travels.dart';
@@ -33,7 +34,7 @@ class TravelForm extends StatelessWidget {
                 _form.currentState?.save();
                 Provider.of<TravelsProvider>(context, listen: false).put(
                   Travel(
-                    id: null,
+                    id: ObjectId,
                     name: _formData['name']!, 
                     travelDate: _formData['travelDate']!,
                   ),
