@@ -6,6 +6,7 @@ export default TravelList = () => (
     title="Londres"
     subtitle="27-06-2022"
     left={(props) => <Avatar.Icon {...props} icon="wallet-travel" />}
-    right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
+    right={(props) => 
+      <IconButton {...props} icon="plus-circle-outline" onPress={() => {}}/>}
   />
 );
