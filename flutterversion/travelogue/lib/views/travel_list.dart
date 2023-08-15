@@ -1,9 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:travelogue/components/travel_tile.dart';
-import 'package:travelogue/provider/travels.dart';
 import 'package:travelogue/routes/app_routes.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,8 +22,6 @@ class TravelList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) { 
-    final TravelsProvider travels = Provider.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Travelogue'),
@@ -51,7 +45,35 @@ class TravelList extends StatelessWidget {
           if(snapshot.hasData){
             return ListView.builder(
               itemCount: snapshot.data!.length,
-              itemBuilder: (context, i) => TravelTile(travels.byIndex(i)),
+              itemBuilder: (context, i){
+                return ListTile(
+                  leading: const CircleAvatar(child: Icon(Icons.card_travel)),
+                  title: Text(snapshot.data![i]['name']),
+                  subtitle: Text(snapshot.data![i]['dateTravel']),
+                  trailing: SizedBox(
+                    width: 100,
+                    child:Row( 
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: () => {
+                            Navigator.of(context).pushNamed(
+                              AppRoutes.TRAVEL_FORM,
+                              arguments: snapshot.data![i]['id'],
+                            )
+                          }, 
+                          icon: const Icon(Icons.edit),
+                          color: Colors.blue,
+                        ),
+                        IconButton(
+                          onPressed: () => {}, 
+                          icon: const Icon(Icons.delete),
+                          color: Colors.red,
+                        ),
+                      ], 
+                  ),
+                  ),
+                );
+              }
               //itemCount: travels.count,
               //itemBuilder: (context, i) => TravelTile(travels.byIndex(i)),
             );

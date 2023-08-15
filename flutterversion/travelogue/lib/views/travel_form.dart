@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mongo_dart/mongo_dart.dart';
-import 'package:provider/provider.dart';
-import 'package:travelogue/models/travel.dart';
-import 'package:travelogue/provider/travels.dart';
 
 class TravelForm extends StatelessWidget {
 
@@ -11,19 +7,8 @@ class TravelForm extends StatelessWidget {
 
   TravelForm({super.key});
 
-  void _loadFormData(Travel travelLoad){
-    _formData['id'] = travelLoad.id;
-    _formData['name'] = travelLoad.name;
-    _formData['travel_date'] = travelLoad.travelDate;
-  }
-
   @override
   Widget build(BuildContext context) {
-
-    final travel = ModalRoute.of(context)!.settings.arguments;
-    
-    //_loadFormData(travel);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastro de Viagens'),
@@ -33,14 +18,7 @@ class TravelForm extends StatelessWidget {
               final isValid = _form.currentState!.validate();
 
               if(isValid){
-                _form.currentState?.save();
-                Provider.of<TravelsProvider>(context, listen: false).put(
-                  Travel(
-                    id: ObjectId,
-                    name: _formData['name']!, 
-                    travelDate: _formData['travelDate']!,
-                  ),
-                ); 
+                _form.currentState?.save(); 
                 Navigator.of(context).pop();
               }  
             }, 
