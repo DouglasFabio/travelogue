@@ -1,4 +1,3 @@
-import 'package:date_field/date_field.dart';
 
 class Travel {
   final id;

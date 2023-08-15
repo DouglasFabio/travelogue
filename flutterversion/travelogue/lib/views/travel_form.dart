@@ -9,6 +9,8 @@ class TravelForm extends StatelessWidget {
   final _form = GlobalKey<FormState>();
   final Map<String, String> _formData = {};
 
+  TravelForm({super.key});
+
   void _loadFormData(Travel travelLoad){
     _formData['id'] = travelLoad.id;
     _formData['name'] = travelLoad.name;
@@ -24,7 +26,7 @@ class TravelForm extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastro de Viagens'),
+        title: const Text('Cadastro de Viagens'),
         actions: [
           IconButton(
             onPressed: () {
@@ -42,12 +44,12 @@ class TravelForm extends StatelessWidget {
                 Navigator.of(context).pop();
               }  
             }, 
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
           )
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Form(
           key: _form,
           child: Column(
@@ -60,7 +62,7 @@ class TravelForm extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(labelText: 'Nome'),
+                decoration: const InputDecoration(labelText: 'Nome'),
                 onSaved: (value) => _formData['name'] = value!,
               ),
               TextFormField(
@@ -71,7 +73,7 @@ class TravelForm extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(labelText: 'Data Viagem'),
+                decoration: const InputDecoration(labelText: 'Data Viagem'),
                 onSaved: (value) => _formData['travelDate'] = value!,
               ),
             ]

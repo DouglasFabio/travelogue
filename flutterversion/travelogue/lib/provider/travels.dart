@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -42,7 +41,7 @@ class TravelsProvider with ChangeNotifier {
   }
 
   void delete(Travel travel){
-    if(travel != null && travel.id != null){
+    if(travel.id != null){
       _items.remove(travel.id);
       notifyListeners();
     }

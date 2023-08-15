@@ -5,14 +5,15 @@ import 'package:travelogue/routes/app_routes.dart';
 class TravelTile extends StatelessWidget {
 
   final Travel travel;
-  const TravelTile(this.travel);
+  const TravelTile(this.travel, {super.key});
+  
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(child: Icon(Icons.card_travel)),
+      leading: const CircleAvatar(child: Icon(Icons.card_travel)),
       title: Text(travel.name),
       subtitle: Text(travel.travelDate),
-      trailing: Container(
+      trailing: SizedBox(
         width: 100,
         child:Row( 
           children: <Widget>[
@@ -23,12 +24,12 @@ class TravelTile extends StatelessWidget {
                   arguments: travel,
                 )
               }, 
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               color: Colors.blue,
             ),
             IconButton(
               onPressed: () => {}, 
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               color: Colors.red,
             ),
           ], 
