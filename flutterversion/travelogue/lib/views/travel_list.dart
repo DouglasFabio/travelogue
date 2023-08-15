@@ -1,24 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:travelogue/routes/app_routes.dart';
-import 'package:http/http.dart' as http;
+import 'package:travelogue/services/travel_services.dart';
+
 
 class TravelList extends StatelessWidget {
   const TravelList({super.key});
-
-
-  Future<List> getTravel() async {
-
-    var url = Uri.parse('http://10.0.2.2:5000/api/Viagem');
-    var response = await http.get(url);
-
-    if(response.statusCode == 200){
-      return jsonDecode(utf8.decode(response.bodyBytes));
-    }else{
-      throw Exception('Erro ao carregar');
-    }
-
-  }
 
   @override
   Widget build(BuildContext context) { 
@@ -57,7 +43,7 @@ class TravelList extends StatelessWidget {
                         IconButton(
                           onPressed: () => {
                             Navigator.of(context).pushNamed(
-                              AppRoutes.TRAVEL_FORM,
+                              AppRoutes.TRAVEL_EDIT,
                               arguments: snapshot.data![i]['id'],
                             )
                           }, 

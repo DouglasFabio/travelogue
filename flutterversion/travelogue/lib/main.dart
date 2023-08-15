@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:travelogue/routes/app_routes.dart';
+import 'package:travelogue/views/travel_edit_form.dart';
 import 'package:travelogue/views/travel_form.dart';
 import 'package:travelogue/views/travel_list.dart';
 
@@ -31,7 +32,8 @@ class MainApp extends StatelessWidget {
         ),
         routes: {
           AppRoutes.HOME: (_) => const TravelList(),
-          AppRoutes.TRAVEL_FORM: (context) => TravelForm()
+          AppRoutes.TRAVEL_FORM: (context) => TravelForm(),
+          AppRoutes.TRAVEL_EDIT: (context) => TravelEdit()
         },
     );
   }
