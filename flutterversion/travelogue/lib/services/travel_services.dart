@@ -46,3 +46,14 @@ Future<void> postTravel(Map<String, dynamic> formData) async {
     print('Erro ao enviar os dados: ${response.statusCode}');
   }
 }
+
+Future<void> deleteTravel(String id) async {
+  final url = '$urlViagem/$id';
+  final response = await http.delete(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    
+  } else {
+    print('Erro ao deletar os dados: ${response.statusCode}');
+  }
+}

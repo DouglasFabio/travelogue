@@ -26,6 +26,11 @@ class _TravelListState extends State<TravelList> {
     });
   }
 
+  Future<void> _removerViagem(String id) async {
+  await deleteTravel(id);
+  _buscarDadosDaAPI();
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +67,7 @@ class _TravelListState extends State<TravelList> {
                     color: Colors.blue,
                   ),
                   IconButton(
-                    onPressed: () => {},
+                    onPressed: () => _removerViagem(_dados[i]['id']),
                     icon: const Icon(Icons.delete),
                     color: Colors.red,
                   ),
