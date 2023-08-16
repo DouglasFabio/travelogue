@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'package:elegant_notification/elegant_notification.dart';
+import 'package:elegant_notification/resources/arrays.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; 
 
 var urlViagem = Uri.parse('https://10.0.2.2:7298/api/Viagem');
 final client = http.Client();
 
-Future<List> getTravel() async {
 
+Future<List> getTravel() async {
   var response = await http.get(urlViagem);
 
   if(response.statusCode == 200){
@@ -30,8 +33,14 @@ Future<void> postTravel(Map<String, dynamic> formData) async {
   print('Resposta da API: ${response.body}');
 
   if (response.statusCode == 200) {
-    // Dados enviados com sucesso
-    print('Dados enviados com sucesso');
+    ElegantNotification.success(
+      width: 360,
+      notificationPosition: NotificationPosition.topLeft,
+      animation: AnimationType.fromTop,
+      title: const Text('Sucesso'),
+      description: const Text('Viagem cadastrada com sucesso!'),
+      onDismiss: () {},
+    ).show;
   } else {
     // Houve um erro ao enviar os dados
     print('Erro ao enviar os dados: ${response.statusCode}');

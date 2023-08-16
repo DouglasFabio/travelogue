@@ -17,6 +17,7 @@ dependencies:
   mongo_dart: ^0.9.1
   http: ^1.1.0
   intl:
+  elegant_notification: ^1.11.0
 
 dev_dependencies:
   flutter_test:

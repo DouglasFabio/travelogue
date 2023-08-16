@@ -3,71 +3,74 @@ import 'package:travelogue/routes/app_routes.dart';
 import 'package:travelogue/services/travel_services.dart';
 
 
-class TravelList extends StatelessWidget {
-  const TravelList({super.key});
+class TravelList extends StatefulWidget {
+  const TravelList({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) { 
+  _TravelListState createState() => _TravelListState();
+}
+
+class _TravelListState extends State<TravelList> {
+  List<dynamic> _dados = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _buscarDadosDaAPI();
+  }
+
+  Future<void> _buscarDadosDaAPI() async {
+    final dados = await getTravel();
+    setState(() {
+      _dados = dados;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Travelogue'),
         actions: <Widget>[
           IconButton(
-            onPressed: () => {
-              Navigator.of(context).pushNamed(AppRoutes.TRAVEL_FORM)
-            }, 
+            onPressed: () => Navigator.of(context).pushNamed(AppRoutes.TRAVEL_FORM),
             icon: const Icon(Icons.add_circle_outlined),
+          ),
+          IconButton(
+            onPressed: _buscarDadosDaAPI,
+            icon: const Icon(Icons.refresh),
           ),
         ],
       ),
-      body: FutureBuilder<List>(
-        future: getTravel(),
-        builder: (context, snapshot){
-          if(snapshot.hasError){
-            return const Center(
-              child: Text('Erro ao carregar dados.'),
-            );
-          }
-          if(snapshot.hasData){
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, i){
-                return ListTile(
-                  leading: const CircleAvatar(child: Icon(Icons.card_travel)),
-                  title: Text(snapshot.data![i]['name']),
-                  subtitle: Text(snapshot.data![i]['dateTravel']),
-                  trailing: SizedBox(
-                    width: 100,
-                    child:Row( 
-                      children: <Widget>[
-                        IconButton(
-                          onPressed: () => {
-                            Navigator.of(context).pushNamed(
-                              AppRoutes.TRAVEL_EDIT,
-                              arguments: snapshot.data![i]['id'],
-                            )
-                          }, 
-                          icon: const Icon(Icons.edit),
-                          color: Colors.blue,
-                        ),
-                        IconButton(
-                          onPressed: () => {}, 
-                          icon: const Icon(Icons.delete),
-                          color: Colors.red,
-                        ),
-                      ], 
+      body: ListView.builder(
+        itemCount: _dados.length,
+        itemBuilder: (context, i) {
+          return ListTile(
+            leading: const CircleAvatar(child: Icon(Icons.card_travel)),
+            title: Text(_dados[i]['name']),
+            subtitle: Text(_dados[i]['dateTravel']),
+            trailing: SizedBox(
+              width: 100,
+              child: Row(
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pushNamed(
+                      AppRoutes.TRAVEL_EDIT,
+                      arguments: _dados[i]['id'],
+                    ),
+                    icon: const Icon(Icons.edit),
+                    color: Colors.blue,
                   ),
+                  IconButton(
+                    onPressed: () => {},
+                    icon: const Icon(Icons.delete),
+                    color: Colors.red,
                   ),
-                );
-              }
-              //itemCount: travels.count,
-              //itemBuilder: (context, i) => TravelTile(travels.byIndex(i)),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
+                ],
+              ),
+            ),
           );
-        }
+        },
       ),
     );
   }
