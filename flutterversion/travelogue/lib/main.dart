@@ -4,7 +4,6 @@ import 'package:travelogue/routes/app_routes.dart';
 import 'package:travelogue/views/travel_edit_form.dart';
 import 'package:travelogue/views/travel_form.dart';
 import 'package:travelogue/views/travel_list.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
  class MyHttpOverrides extends HttpOverrides{
   @override
