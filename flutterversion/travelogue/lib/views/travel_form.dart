@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:travelogue/services/travel_services.dart';
 
 class TravelForm extends StatelessWidget {
 
   final _form = GlobalKey<FormState>();
-  final Map<String, String> _formData = {};
+  String _name = '';
+  DateTime? _dateTravel;
 
   TravelForm({super.key});
 
@@ -16,9 +18,13 @@ class TravelForm extends StatelessWidget {
           IconButton(
             onPressed: () {
               final isValid = _form.currentState!.validate();
-
               if(isValid){
-                _form.currentState?.save(); 
+                _form.currentState?.save();
+                final formData = {
+                  'name': _name,
+                  'dateTravel': _dateTravel
+                };
+                postTravel(formData); 
                 Navigator.of(context).pop();
               }  
             }, 
@@ -33,7 +39,6 @@ class TravelForm extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
-                initialValue: _formData['name'],
                 validator: (value){
                   if(value == null || value.isEmpty){
                     return 'Preencha este campo';
@@ -41,18 +46,13 @@ class TravelForm extends StatelessWidget {
                   return null;
                 },
                 decoration: const InputDecoration(labelText: 'Nome'),
-                onSaved: (value) => _formData['name'] = value!,
+                onSaved: (value) => _name = value!,
               ),
-              TextFormField(
-                initialValue: _formData['travelDate'],
-                validator: (value){
-                  if(value == null || value.isEmpty){
-                    return 'Preencha este campo';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(labelText: 'Data Viagem'),
-                onSaved: (value) => _formData['travelDate'] = value!,
+              InputDatePickerFormField(
+                fieldLabelText: 'Data Viagem',
+                firstDate: DateTime(1900),
+                lastDate: DateTime(2100),
+                onDateSaved: (value) => _dateTravel = value,
               ),
             ]
           ) ,

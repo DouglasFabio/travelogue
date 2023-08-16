@@ -4,6 +4,7 @@ import 'package:travelogue/routes/app_routes.dart';
 import 'package:travelogue/views/travel_edit_form.dart';
 import 'package:travelogue/views/travel_form.dart';
 import 'package:travelogue/views/travel_list.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
  class MyHttpOverrides extends HttpOverrides{
   @override
@@ -24,17 +25,24 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Travelogue Dev Mob. II',
-        theme: ThemeData(
-          primarySwatch: Colors.cyan,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        routes: {
-          AppRoutes.HOME: (_) => const TravelList(),
-          AppRoutes.TRAVEL_FORM: (context) => TravelForm(),
-          AppRoutes.TRAVEL_EDIT: (context) => TravelEdit()
-        },
+      //localizationsDelegates: const [
+      //  GlobalMaterialLocalizations.delegate,
+      //  GlobalWidgetsLocalizations.delegate,
+      //],
+      //supportedLocales: const [
+      //  Locale('pt', 'BR'),
+      //],
+      debugShowCheckedModeBanner: false,
+      title: 'Travelogue Dev Mob. II',
+      theme: ThemeData(
+        primarySwatch: Colors.cyan,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      routes: {
+        AppRoutes.HOME: (_) => const TravelList(),
+        AppRoutes.TRAVEL_FORM: (context) => TravelForm(),
+        AppRoutes.TRAVEL_EDIT: (context) => TravelEdit()
+      },
     );
   }
 }
