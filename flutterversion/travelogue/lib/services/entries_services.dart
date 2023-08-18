@@ -4,12 +4,12 @@ import 'package:elegant_notification/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-var urlViagem = Uri.parse('https://10.0.2.2:7298/api/Viagem');
+var urlEntrada = Uri.parse('https://10.0.2.2:7298/api/Entrada');
 final client = http.Client();
 
 
-Future<List> getTravel() async {
-  var response = await http.get(urlViagem);
+Future<List> getEntries() async {
+  var response = await http.get(urlEntrada);
 
   if(response.statusCode == 200){
     return jsonDecode(utf8.decode(response.bodyBytes));
@@ -19,8 +19,8 @@ Future<List> getTravel() async {
 
 }
 
-Future<List> getOneTravel(String id) async {
-  final url = '$urlViagem/$id';
+Future<List> getEntry(String id) async {
+  final url = '$urlEntrada/$id';
   var response = await http.get(Uri.parse(url));
 
   if(response.statusCode == 200){
@@ -31,7 +31,7 @@ Future<List> getOneTravel(String id) async {
 
 }
 
-Future<void> postTravel(Map<String, dynamic> formData) async {
+Future<void> postEntry(Map<String, dynamic> formData) async {
   final headers = {'Content-Type': 'application/json'};
   final body = json.encode(formData, toEncodable: (value) {
     if (value is DateTime) {
@@ -40,7 +40,7 @@ Future<void> postTravel(Map<String, dynamic> formData) async {
     return value;
   });
 
-  final response = await client.post(urlViagem, headers: headers, body: body);
+  final response = await client.post(urlEntrada, headers: headers, body: body);
 
   print('Resposta da API: ${response.body}');
 
@@ -59,8 +59,8 @@ Future<void> postTravel(Map<String, dynamic> formData) async {
   }
 }
 
-Future<void> deleteTravel(String id) async {
-  final url = '$urlViagem/$id';
+Future<void> deleteEntry(String id) async {
+  final url = '$urlEntrada/$id';
   final response = await http.delete(Uri.parse(url));
 
   if (response.statusCode == 200) {
@@ -70,8 +70,8 @@ Future<void> deleteTravel(String id) async {
   }
 }
 
-Future<void> putTravel(String id, Map<String, dynamic> formData) async {
-  final url = '$urlViagem/$id';
+Future<void> putEntry(String id, Map<String, dynamic> formData) async {
+  final url = '$urlEntrada/$id';
   final headers = {'Content-Type': 'application/json'};
   final body = json.encode(formData);
 

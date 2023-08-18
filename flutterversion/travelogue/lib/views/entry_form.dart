@@ -1,42 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:travelogue/services/travel_services.dart';
 
-class TravelEdit extends StatelessWidget {
+class EntryForm extends StatelessWidget {
 
   final _form = GlobalKey<FormState>();
-  final Map<String, dynamic> _formData = {};
   String _name = '';
   DateTime? _dateTravel;
-  
-  TravelEdit({super.key});
+
+  EntryForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    Future<void> _atualizarViagem() async {
-      final isValid = _form.currentState!.validate();
-      if(isValid){
-        _form.currentState?.save();
-        final formData = {
-          'name': _name,
-          'dateTravel': _dateTravel
-        };
-        postTravel(formData); 
-        Navigator.of(context).pop();
-      } 
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edição de viagens'),
+        title: const Text('Nova Entrada'),
         actions: [
           IconButton(
             onPressed: () {
               final isValid = _form.currentState!.validate();
-
               if(isValid){
                 _form.currentState?.save();
-                _atualizarViagem; 
+                final formData = {
+                  'name': _name,
+                  'dateTravel': _dateTravel
+                };
+                postTravel(formData); 
                 Navigator.of(context).pop();
               }  
             }, 
