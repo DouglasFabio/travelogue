@@ -26,11 +26,6 @@ class _TravelListState extends State<TravelSearch> {
     });
   }
 
-  Future<void> _removerViagem(String id) async {
-  await deleteEntry(id);
-  _buscarDadosDaAPI();
-}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
