@@ -20,7 +20,7 @@ export default TravelForm = () => (
           onChange={text => setValue('data', text)}
           inputMode="start"
         />
-        <Button icon="send" mode="contained" onPress={() => console.log('Pressed')}>
+        <Button icon="send" mode="contained" onPress={() => postTravel()}>
             Cadastrar
         </Button>
     </>
