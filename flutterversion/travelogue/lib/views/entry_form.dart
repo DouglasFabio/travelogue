@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:travelogue/services/entries_services.dart';
 import 'package:travelogue/services/travel_services.dart';
 
 class EntryForm extends StatelessWidget {
 
   final _form = GlobalKey<FormState>();
-  String _name = '';
-  DateTime? _dateTravel;
+  String _visitedLocal = '';
+  DateTime? _dateVisit;
+  String _description = ''; 
+  String _midiaPath = '';
+
 
   EntryForm({super.key});
 
@@ -21,10 +25,13 @@ class EntryForm extends StatelessWidget {
               if(isValid){
                 _form.currentState?.save();
                 final formData = {
-                  'name': _name,
-                  'dateTravel': _dateTravel
+                  'visitedLocal': _visitedLocal,
+                  'dateVisit': _dateVisit,
+                  'description': _description,
+                  'midiaPath': _midiaPath,
+                  'codTravel': 'colocarID'
                 };
-                postTravel(formData); 
+                postEntry(formData); 
                 Navigator.of(context).pop();
               }  
             }, 
@@ -45,14 +52,35 @@ class EntryForm extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: const InputDecoration(labelText: 'Nome'),
-                onSaved: (value) => _name = value!,
+                decoration: const InputDecoration(labelText: 'Local visitado'),
+                onSaved: (value) => _visitedLocal = value!,
               ),
               InputDatePickerFormField(
-                fieldLabelText: 'Data Viagem',
+                fieldLabelText: 'Data Visita',
                 firstDate: DateTime(1900),
                 lastDate: DateTime(2100),
-                onDateSaved: (value) => _dateTravel = value,
+                onDateSaved: (value) => _dateVisit = value,
+              ),
+              TextFormField(
+                maxLines: null,
+                validator: (value){
+                  if(value == null || value.isEmpty){
+                    return 'Preencha este campo';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(labelText: 'Descrição'),
+                onSaved: (value) => _description = value!,
+              ),
+              TextFormField(
+                validator: (value){
+                  if(value == null || value.isEmpty){
+                    return 'Preencha este campo';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(labelText: 'Links para Midias'),
+                onSaved: (value) => _midiaPath = value!,
               ),
             ]
           ) ,
