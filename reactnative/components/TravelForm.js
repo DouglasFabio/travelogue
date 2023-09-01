@@ -4,7 +4,7 @@ import { Button, TextInput } from "react-native-paper";
 import { DatePickerInput } from "react-native-paper-dates";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
-export default TravelForm = () => (
+export default function TravelForm(){
     
     <>
       <TextInput
@@ -24,5 +24,5 @@ export default TravelForm = () => (
             Cadastrar
         </Button>
     </>
-  );
+}
 
