@@ -15,6 +15,8 @@ class EntryForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final idViagemSelecionada =
+        ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nova Entrada'),
@@ -29,7 +31,7 @@ class EntryForm extends StatelessWidget {
                   'dateVisit': _dateVisit,
                   'description': _description,
                   'midiaPath': _midiaPath,
-                  'codTravel': 'colocarID'
+                  'codTravel': idViagemSelecionada
                 };
                 postEntry(formData); 
                 Navigator.of(context).pop();

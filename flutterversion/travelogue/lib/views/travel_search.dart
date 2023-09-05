@@ -28,12 +28,15 @@ class _TravelListState extends State<TravelSearch> {
 
   @override
   Widget build(BuildContext context) {
+    final idViagemSelecionada = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Daily Entries'),
         actions: <Widget>[
           IconButton(
-            onPressed: () => Navigator.of(context).pushNamed(AppRoutes.ENTRY_FORM),
+            onPressed: () => Navigator.of(context).pushNamed(
+              AppRoutes.ENTRY_FORM,
+              arguments: idViagemSelecionada),
             icon: const Icon(Icons.add_circle_outlined),
           ),
           IconButton(
