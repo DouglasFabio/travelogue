@@ -62,7 +62,7 @@ void didChangeDependencies() {
                 children: <Widget>[
                   IconButton(
                     onPressed: () => Navigator.of(context).pushNamed(
-                      AppRoutes.TRAVEL_EDIT,
+                      AppRoutes.ENTRY_GALLERY,
                       arguments: _dados[i]['id'],
                     ),
                     icon: const Icon(Icons.collections),

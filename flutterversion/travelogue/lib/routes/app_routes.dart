@@ -4,4 +4,5 @@ class AppRoutes {
   static const TRAVEL_EDIT = '/travel-edit';
   static const TRAVEL_SEARCH = '/travel-search';
   static const ENTRY_FORM = '/entry-form';
+  static const ENTRY_GALLERY = '/entry-gallery';
 }

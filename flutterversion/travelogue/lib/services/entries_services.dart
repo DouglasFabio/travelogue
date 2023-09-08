@@ -8,6 +8,18 @@ var urlEntrada = Uri.parse('https://10.0.2.2:7298/api/Entrada/');
 final client = http.Client();
 
 
+Future<List> getImages(String idEntry) async {
+  final url = 'https://10.0.2.2:7298/api/Entrada/$idEntry';
+  var response = await http.get(Uri.parse(url));
+  
+  if(response.statusCode == 200){
+    return jsonDecode(utf8.decode(response.bodyBytes));
+  }else{
+    throw Exception('Erro ao carregar');
+  }
+}
+
+
 Future<List> getEntries(String idViagem) async {
   var response = await http.get(urlEntrada);
 
