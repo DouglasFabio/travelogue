@@ -4,11 +4,11 @@ import 'package:elegant_notification/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-var urlEntrada = Uri.parse('https://10.0.2.2:7298/api/Entrada');
+var urlEntrada = Uri.parse('https://10.0.2.2:7298/api/Entrada/');
 final client = http.Client();
 
 
-Future<List> getEntries() async {
+Future<List> getEntries(String idViagem) async {
   var response = await http.get(urlEntrada);
 
   if(response.statusCode == 200){
@@ -19,8 +19,8 @@ Future<List> getEntries() async {
 
 }
 
-Future<List> getEntry(String id) async {
-  final url = '$urlEntrada/$id';
+Future<List> getEntry(String idViagem) async {
+  final url = '$urlEntrada$idViagem';
   var response = await http.get(Uri.parse(url));
 
   if(response.statusCode == 200){

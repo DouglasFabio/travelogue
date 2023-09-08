@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:travelogue/routes/app_routes.dart';
 import 'package:travelogue/services/entries_services.dart';
 
-
 class TravelSearch extends StatefulWidget {
   const TravelSearch({Key? key}) : super(key: key);
 
@@ -14,13 +13,15 @@ class _TravelListState extends State<TravelSearch> {
   List<dynamic> _dados = [];
 
   @override
-  void initState() {
-    super.initState();
-    _buscarDadosDaAPI();
-  }
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  final idViagemSelecionada =
+      ModalRoute.of(context)!.settings.arguments as String;
+  _buscarDadosDaAPI(idViagemSelecionada);
+}
 
-  Future<void> _buscarDadosDaAPI() async {
-    final dados = await getEntries();
+  Future<void> _buscarDadosDaAPI(idViagemSelecionada) async {
+    final dados = await getEntry(idViagemSelecionada);
     setState(() {
       _dados = dados;
     });
@@ -28,19 +29,22 @@ class _TravelListState extends State<TravelSearch> {
 
   @override
   Widget build(BuildContext context) {
-    final idViagemSelecionada = ModalRoute.of(context)!.settings.arguments as String;
+    final idViagemSelecionada =
+        ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Daily Entries'),
         actions: <Widget>[
           IconButton(
             onPressed: () => Navigator.of(context).pushNamed(
-              AppRoutes.ENTRY_FORM,
-              arguments: idViagemSelecionada),
+                AppRoutes.ENTRY_FORM,
+                arguments: idViagemSelecionada),
             icon: const Icon(Icons.add_circle_outlined),
           ),
           IconButton(
-            onPressed: _buscarDadosDaAPI,
+            onPressed: () {
+              _buscarDadosDaAPI(idViagemSelecionada);
+            },
             icon: const Icon(Icons.refresh),
           ),
         ],

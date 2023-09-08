@@ -19,7 +19,7 @@ class EntryForm extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nova Entrada'),
+        title:  Text(idViagemSelecionada),
         actions: [
           IconButton(
             onPressed: () {
