@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:travelogue/routes/app_routes.dart';
 import 'package:travelogue/services/travel_services.dart';
 
-
 class TravelList extends StatefulWidget {
   const TravelList({Key? key}) : super(key: key);
 
@@ -27,9 +26,9 @@ class _TravelListState extends State<TravelList> {
   }
 
   Future<void> _removerViagem(String id) async {
-  await deleteTravel(id);
-  _buscarDadosDaAPI();
-}
+    await deleteTravel(id);
+    _buscarDadosDaAPI();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,8 @@ class _TravelListState extends State<TravelList> {
         title: const Text('Travelogue'),
         actions: <Widget>[
           IconButton(
-            onPressed: () => Navigator.of(context).pushNamed(AppRoutes.TRAVEL_FORM),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(AppRoutes.TRAVEL_FORM),
             icon: const Icon(Icons.add_circle_outlined),
           ),
           IconButton(

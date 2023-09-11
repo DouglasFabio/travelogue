@@ -50,7 +50,7 @@ class _EntryFormState extends State<EntryForm> {
         ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
-        title: Text(idViagemSelecionada),
+        title: const Text("Nova Entrada"),
         actions: [
           IconButton(
             onPressed: () {
