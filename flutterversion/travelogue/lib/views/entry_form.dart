@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:travelogue/services/entries_services.dart';
 
 class EntryForm extends StatefulWidget {
@@ -18,7 +19,8 @@ class _EntryFormState extends State<EntryForm> {
   String _midiaPath = '';
   List<String> _imagePaths = [];
   bool _btnClicked = false;
-  TextStyle _registroImagensStyle = const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
+  TextStyle _registroImagensStyle =
+      const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
 
   Future<void> _pickImages() async {
     final picker = ImagePicker();
@@ -54,6 +56,13 @@ class _EntryFormState extends State<EntryForm> {
         actions: [
           IconButton(
             onPressed: () {
+              if (_dateVisit == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('Por favor, selecione uma data.')),
+                );
+                return;
+              }
               final isValid = _form.currentState!.validate();
               if (isValid) {
                 _form.currentState?.save();
@@ -111,12 +120,6 @@ class _EntryFormState extends State<EntryForm> {
                 decoration: const InputDecoration(labelText: 'Local visitado'),
                 onSaved: (value) => _visitedLocal = value!,
               ),
-              InputDatePickerFormField(
-                fieldLabelText: 'Data Visita',
-                firstDate: DateTime(1900),
-                lastDate: DateTime(2100),
-                onDateSaved: (value) => _dateVisit = value,
-              ),
               TextFormField(
                 maxLines: null,
                 validator: (value) {
@@ -128,7 +131,39 @@ class _EntryFormState extends State<EntryForm> {
                 decoration: const InputDecoration(labelText: 'Descrição'),
                 onSaved: (value) => _description = value!,
               ),
-              const SizedBox(height: 16), // Adiciona um espaço entre os widgets
+              Row(
+                children: [
+                  const Text(
+                    'Data:',
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                  const SizedBox(
+                      width:
+                          14), // Adiciona algum espaço entre o rótulo e o texto
+                  TextButton(
+                    onPressed: () async {
+                      final selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: _dateVisit ?? DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100),
+                      );
+                      if (selectedDate != null) {
+                        setState(() {
+                          _dateVisit = selectedDate;
+                        });
+                      }
+                    },
+                    child: Text(
+                      _dateVisit != null
+                          ? DateFormat('dd/MM/yyyy').format(_dateVisit!)
+                          : 'Selecione a Data da Visita',
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 26), // Adiciona um espaço entre os widgets
               Text(
                 'REGISTRO DE IMAGENS',
                 style: _registroImagensStyle,
