@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:travelogue/services/travel_services.dart';
 
 class TravelEdit extends StatefulWidget {
@@ -14,6 +15,20 @@ class _TravelEditState extends State<TravelEdit> {
   String _name = '';
   String _title = '';
   DateTime? _dateTravel;
+  final LocalAuthentication _localAuth = LocalAuthentication();
+
+  Future<bool> _authenticateUser() async {
+    bool authenticated = false;
+    try {
+      authenticated = await _localAuth.authenticate(
+          localizedReason: 'Por favor, autentique para atualizar os dados',
+          options: const AuthenticationOptions(
+              useErrorDialogs: true, stickyAuth: true));
+    } catch (e) {
+      print(e);
+    }
+    return authenticated;
+  }
 
   @override
   void didChangeDependencies() {
@@ -27,7 +42,7 @@ class _TravelEditState extends State<TravelEdit> {
     if (this.mounted) {
       setState(() {
         _name = travelData['name'];
-        _title = travelData['name']; 
+        _title = travelData['name'];
       });
     }
   }
@@ -42,10 +57,17 @@ class _TravelEditState extends State<TravelEdit> {
         'name': _name,
         'dateTravel': _dateTravel
       };
-      await putTravel(idTravel, formData);
-      if (this.mounted) {
-        Navigator.of(context)
-            .popUntil(ModalRoute.withName(Navigator.defaultRouteName));
+      // Autenticar o usuário antes de atualizar os dados
+      bool didAuthenticate = await _authenticateUser();
+
+      if (didAuthenticate) {
+        await putTravel(idTravel, formData);
+        if (this.mounted) {
+          Navigator.of(context)
+              .popUntil(ModalRoute.withName(Navigator.defaultRouteName));
+        }
+      } else {
+        print('Falha na autenticação do usuário');
       }
     }
   }
