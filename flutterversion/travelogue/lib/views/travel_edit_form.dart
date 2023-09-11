@@ -12,6 +12,7 @@ class TravelEdit extends StatefulWidget {
 class _TravelEditState extends State<TravelEdit> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
+  String _title = '';
   DateTime? _dateTravel;
 
   @override
@@ -23,38 +24,40 @@ class _TravelEditState extends State<TravelEdit> {
 
   Future<void> _loadData(String idTravel) async {
     final travelData = await getOneTravel(idTravel);
-    setState(() {
-      _name = travelData['name'];
-    });
-
-
-
-
-    print(travelData);
-
-
-
-
+    if (this.mounted) {
+      setState(() {
+        _name = travelData['name'];
+        _title = travelData['name']; 
+      });
+    }
   }
 
-  Future<void> _atualizarViagem() async {
+  Future<void> _atualizarViagem(formData) async {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
       final idTravel = ModalRoute.of(context)!.settings.arguments as String;
-      final formData = {'id': idTravel, 'name': _name, 'dateTravel': _dateTravel};
+      final formData = {
+        'id': idTravel,
+        'name': _name,
+        'dateTravel': _dateTravel
+      };
       await putTravel(idTravel, formData);
-      Navigator.of(context).pop();
+      if (this.mounted) {
+        Navigator.of(context)
+            .popUntil(ModalRoute.withName(Navigator.defaultRouteName));
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-     final idTravel = ModalRoute.of(context)!.settings.arguments as String;
-    _loadData(idTravel);
+    final idTravel = ModalRoute.of(context)!.settings.arguments as String;
+    getOneTravel(idTravel);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastro de Viagens'),
+        title: Text('Editar - $_title'),
         actions: [
           IconButton(
             onPressed: () {
@@ -74,7 +77,7 @@ class _TravelEditState extends State<TravelEdit> {
                       ? DateFormat('yyyy-MM-dd').format(_dateTravel!)
                       : null,
                 };
-                putTravel(idTravel, formData);
+                _atualizarViagem(formData);
                 Navigator.of(context).pop();
               }
             },

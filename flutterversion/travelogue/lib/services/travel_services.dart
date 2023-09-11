@@ -73,7 +73,12 @@ Future<void> deleteTravel(String id) async {
 Future<void> putTravel(String id, Map<String, dynamic> formData) async {
   final url = '$urlViagem/$id';
   final headers = {'Content-Type': 'application/json'};
-  final body = json.encode(formData);
+  final body = json.encode(formData, toEncodable: (value) {
+    if (value is DateTime) {
+      return value.toIso8601String().substring(0,10);
+    }
+    return value;
+  });
 
   final response = await http.put(Uri.parse(url), headers: headers, body: body);
 
