@@ -17,6 +17,8 @@ class _EntryFormState extends State<EntryForm> {
   String _description = '';
   String _midiaPath = '';
   List<String> _imagePaths = [];
+  bool _btnClicked = false;
+  TextStyle _registroImagensStyle = const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
 
   Future<void> _pickImages() async {
     final picker = ImagePicker();
@@ -25,6 +27,7 @@ class _EntryFormState extends State<EntryForm> {
       setState(() {
         _imagePaths = pickedFiles.map((file) => file.path).toList();
         _midiaPath = _imagePaths.join(',');
+        _btnClicked = true;
       });
     }
   }
@@ -36,6 +39,7 @@ class _EntryFormState extends State<EntryForm> {
       setState(() {
         _imagePaths.add(pickedFile.path);
         _midiaPath = _imagePaths.join(',');
+        _btnClicked = true;
       });
     }
   }
@@ -60,6 +64,30 @@ class _EntryFormState extends State<EntryForm> {
                   'midiaPath': _midiaPath,
                   'codTravel': idViagemSelecionada
                 };
+                if (_imagePaths.isEmpty) {
+                  // Altere a cor do texto para vermelho e exiba um alerta
+                  setState(() {
+                    _registroImagensStyle = const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red);
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Erro'),
+                        content: const Text(
+                            'Por favor, selecione pelo menos uma imagem.'),
+                        actions: [
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+                  return;
+                }
                 postEntry(formData);
                 Navigator.of(context).pop();
               }
@@ -101,9 +129,9 @@ class _EntryFormState extends State<EntryForm> {
                 onSaved: (value) => _description = value!,
               ),
               const SizedBox(height: 16), // Adiciona um espaço entre os widgets
-              const Text(
+              Text(
                 'REGISTRO DE IMAGENS',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: _registroImagensStyle,
               ),
               ElevatedButton(
                 onPressed: _pickImages,
@@ -111,7 +139,7 @@ class _EntryFormState extends State<EntryForm> {
               ),
               ElevatedButton(
                 onPressed: _camera,
-                child: const Text('Tirar Foto com a Câmera'),
+                child: const Icon(Icons.camera_alt),
               ),
               ..._imagePaths.map(
                 (path) => InteractiveViewer(

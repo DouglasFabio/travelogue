@@ -9,7 +9,7 @@ final client = http.Client();
 
 
 Future<List> getImages(String idEntry) async {
-  final url = 'https://10.0.2.2:7298/api/Entrada/$idEntry';
+  final url = 'https://10.0.2.2:7298/api/Imagem/$idEntry';
   var response = await http.get(Uri.parse(url));
   
   if(response.statusCode == 200){

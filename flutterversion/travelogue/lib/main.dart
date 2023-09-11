@@ -45,8 +45,8 @@ class MainApp extends StatelessWidget {
         AppRoutes.TRAVEL_FORM: (context) => TravelForm(),
         AppRoutes.TRAVEL_EDIT: (context) => TravelEdit(),
         AppRoutes.TRAVEL_SEARCH: (context) => const TravelSearch(),
-        AppRoutes.ENTRY_FORM:(context) => EntryForm(),
-        AppRoutes.ENTRY_GALLERY:(context) => EntryGallery()
+        AppRoutes.ENTRY_FORM:(context) => const EntryForm(),
+        AppRoutes.ENTRY_GALLERY:(context) => const EntryGallery()
       },
     );
   }
