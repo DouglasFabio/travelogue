@@ -24,8 +24,8 @@ class _TravelEditState extends State<TravelEdit> {
   Future<void> _loadData(String idTravel) async {
     final travelData = await getOneTravel(idTravel);
     setState(() {
-      _name = travelData[0];
-      _dateTravel = DateTime.parse(travelData[1]);
+      _name = travelData[1];
+      _dateTravel = DateTime.parse(travelData[2]);
     });
   }
 
