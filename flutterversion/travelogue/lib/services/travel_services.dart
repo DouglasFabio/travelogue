@@ -19,12 +19,12 @@ Future<List> getTravel() async {
 
 }
 
-Future<String> getOneTravel(String id) async {
+Future<Map<String, dynamic>> getOneTravel(String id) async {
   final url = '$urlViagem/$id';
   var response = await http.get(Uri.parse(url));
 
   if(response.statusCode == 200){
-    return response.body;
+    return jsonDecode(utf8.decode(response.bodyBytes));
   }else{
     throw Exception('Erro ao carregar');
   }

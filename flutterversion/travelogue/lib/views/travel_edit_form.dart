@@ -24,9 +24,17 @@ class _TravelEditState extends State<TravelEdit> {
   Future<void> _loadData(String idTravel) async {
     final travelData = await getOneTravel(idTravel);
     setState(() {
-      _name = travelData[1];
-      _dateTravel = DateTime.parse(travelData[2]);
+      _name = travelData['name'];
     });
+
+
+
+
+    print(travelData);
+
+
+
+
   }
 
   Future<void> _atualizarViagem() async {
@@ -34,7 +42,7 @@ class _TravelEditState extends State<TravelEdit> {
     if (isValid) {
       _formKey.currentState!.save();
       final idTravel = ModalRoute.of(context)!.settings.arguments as String;
-      final formData = {'name': _name, 'dateTravel': _dateTravel};
+      final formData = {'id': idTravel, 'name': _name, 'dateTravel': _dateTravel};
       await putTravel(idTravel, formData);
       Navigator.of(context).pop();
     }
@@ -42,6 +50,8 @@ class _TravelEditState extends State<TravelEdit> {
 
   @override
   Widget build(BuildContext context) {
+     final idTravel = ModalRoute.of(context)!.settings.arguments as String;
+    _loadData(idTravel);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastro de Viagens'),
@@ -64,7 +74,7 @@ class _TravelEditState extends State<TravelEdit> {
                       ? DateFormat('yyyy-MM-dd').format(_dateTravel!)
                       : null,
                 };
-                postTravel(formData);
+                putTravel(idTravel, formData);
                 Navigator.of(context).pop();
               }
             },
