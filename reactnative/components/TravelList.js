@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, RefreshControl } from 'react-native';
-import { Avatar, Card, Button, IconButton } from 'react-native-paper';
+import { Avatar, Card, Button, IconButton, FAB } from 'react-native-paper';
 import axios from 'axios';
 
 const TravelList = ({ navigation }) => {
@@ -25,6 +25,10 @@ const TravelList = ({ navigation }) => {
       });
   };
 
+  const AddTravel = () => {
+    navigation.navigate('TravelForm');
+  }
+
   const handleEdit = (travel) => {
     navigation.navigate('TravelEdit', { travel });
   };
@@ -45,29 +49,42 @@ const TravelList = ({ navigation }) => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      <View>
-        {data.map((travel) => (
-          <Card key={travel.id}>
-            <Card.Title
-              title={travel.name}
-              subtitle={travel.dateTravel}
-              left={(props) => <Avatar.Icon {...props} icon="wallet-travel" />}
-            />
-            <Card.Actions>
-              <Button onPress={() => navigation.navigate('EntryForm', { travelId: travel.id })}>Registrar entrada</Button>
-              <IconButton onPress={() => handleEdit(travel)} icon="pencil"/>
-              <IconButton onPress={() => handleDelete(travel.id)} icon="delete" iconColor='red'/>
-            </Card.Actions>
-          </Card>
-        ))}
-      </View>
-    </ScrollView>
+    <>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View>
+          {data.map((travel) => (
+            <Card key={travel.id}>
+              <Card.Title
+                title={travel.name}
+                subtitle={travel.dateTravel}
+                left={(props) => <Avatar.Icon {...props} icon="wallet-travel" />}
+              />
+              <Card.Actions>
+                <Button onPress={() => navigation.navigate('EntryForm', { travelId: travel.id })}>Registrar entrada</Button>
+                <IconButton onPress={() => handleEdit(travel)} icon="pencil" />
+                <IconButton onPress={() => handleDelete(travel.id)} icon="delete" iconColor='red' />
+              </Card.Actions>
+            </Card>
+          ))}
+        </View>
+      </ScrollView>
+      <FAB
+        style={{
+          position: 'absolute',
+          margin: 16,
+          right: 0,
+          bottom: 0,
+        }}
+        small
+        icon="plus"
+        onPress={() => AddTravel()}
+      />
+    </>
   );
 };
 

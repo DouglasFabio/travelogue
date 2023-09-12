@@ -5,6 +5,7 @@ import TravelList from './components/TravelList';
 import Toast from 'react-native-toast-message';
 import TravelForm from './components/TravelForm';
 import EntryForm from './components/EntryForm';
+import TravelEdit from './components/TravelEdit';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,7 +13,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='list' component={TravelList} options={{title: 'Travelogue'}}/>
+        <Stack.Screen name='TravelList' component={TravelList} options={{title: 'Travelogue'}}/>
         <Stack.Screen name='TravelForm' component={TravelForm} options={{title: 'Travelogue'}}/>
         <Stack.Screen name='EntryForm' component={EntryForm} options={{title: 'Travelogue'}}/>
         <Stack.Screen name='TravelEdit' component={TravelEdit} options={{title: 'Travelogue'}}/>

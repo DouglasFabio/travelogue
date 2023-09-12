@@ -2,7 +2,6 @@
 import React from "react";
 import { Button, TextInput } from "react-native-paper";
 import { DatePickerInput } from "react-native-paper-dates";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export default function TravelForm(){
     
