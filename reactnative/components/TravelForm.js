@@ -38,13 +38,17 @@ export default function TravelForm({ route }) {
       }
       const formattedDate = dateTravel.toISOString().split('T')[0];
       const travelData = {
-        id: route.params.travelId,
         name: name,
         dateTravel: formattedDate,
       };
 
       let response;
       if (route.params?.travelId) {
+        const travelData = {
+          id: route.params.travelId,
+          name: name,
+          dateTravel: formattedDate,
+        };
         response = await axios.put(`${url}${route.params.travelId}`, travelData);
       } else {
         response = await axios.post(url, travelData);
