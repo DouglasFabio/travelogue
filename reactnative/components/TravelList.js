@@ -65,7 +65,11 @@ const TravelList = ({ navigation }) => {
                 left={(props) => <Avatar.Icon {...props} icon="wallet-travel" />}
               />
               <Card.Actions>
-                <Button onPress={() => navigation.navigate('EntryForm', { travelId: travel.id })}>Registrar entrada</Button>
+                {travel.name ? (
+                  <Button onPress={() => navigation.navigate('EntryForm', { travelId: travel.id })}>Registrar entrada</Button>
+                ) : (
+                  <Button buttonColor='lightcoral' onPress={() => navigation.navigate('TravelForm', { travelId: travel.id, dateTravel: travel.dateTravel })}>Completar cadastro</Button>
+                )}
                 <IconButton onPress={() => handleEdit(travel)} icon="pencil" />
                 <IconButton onPress={() => handleDelete(travel.id)} icon="delete" iconColor='red' />
               </Card.Actions>
