@@ -14,9 +14,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name='TravelList' component={TravelList} options={{title: 'Travelogue'}}/>
-        <Stack.Screen name='TravelForm' component={TravelForm} options={{title: 'Travelogue'}}/>
-        <Stack.Screen name='EntryForm' component={EntryForm} options={{title: 'Travelogue'}}/>
-        <Stack.Screen name='TravelEdit' component={TravelEdit} options={{title: 'Travelogue'}}/>
+        <Stack.Screen name='TravelForm' component={TravelForm} options={{title: 'Cadastro de viagens'}}/>
+        <Stack.Screen name='EntryForm' component={EntryForm} options={{title: 'Nova Entrada'}}/>
+        <Stack.Screen name='TravelEdit' component={TravelEdit} options={{title: 'Editar viagem'}}/>
 
       </Stack.Navigator>
       <StatusBar style="auto" />
