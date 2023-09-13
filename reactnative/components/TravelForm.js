@@ -37,16 +37,25 @@ export default function TravelForm({ route }) {
         return;
       }
       const formattedDate = dateTravel.toISOString().split('T')[0];
-      const response = await axios.post(url, {
+      const travelData = {
+        id: route.params.travelId,
         name: name,
         dateTravel: formattedDate,
-      });
+      };
+
+      let response;
+      if (route.params?.travelId) {
+        response = await axios.put(`${url}${route.params.travelId}`, travelData);
+      } else {
+        response = await axios.post(url, travelData);
+      }
       console.log(response.data);
       navigation.navigate('TravelList');
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <View style={{ padding: 10 }}>
       <TextInput
@@ -56,14 +65,21 @@ export default function TravelForm({ route }) {
         onChangeText={text => setName(text)}
         style={{ marginBottom: 10 }}
       />
-      <DatePickerInput
-        locale="pt-br"
-        label={'Data'}
-        value={dateTravel}
-        onChange={date => setDateTravel(date)}
-        inputMode="start"
-        style={{ marginBottom: 10 }}
-      />
+      {dateTravel ? (
+        <TextInput
+          label={'Data'}
+          value={dateTravel instanceof Date ? dateTravel.toISOString().split('T')[0] : dateTravel}
+          style={{ marginBottom: 10 }}
+        />
+      ) : (
+        <DatePickerInput
+          locale="pt-br"
+          label={'Data'}
+          onChange={date => setDateTravel(date)}
+          inputMode="start"
+          style={{ marginBottom: 10 }}
+        />
+      )}
       <Button icon="send" mode="contained" onPress={postTravel}>
         Cadastrar
       </Button>
