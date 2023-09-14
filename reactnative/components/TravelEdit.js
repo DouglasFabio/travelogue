@@ -44,6 +44,12 @@ export default function TravelEdit({ route }) {
         dateTravel: formattedDate,
       };
       let  response = await axios.put(`${url}${route.params.travelId}`, travelData);
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: JSON.stringify(response.data),
+        position: 'bottom'
+      });
       console.log(response.data);
       navigation.navigate('TravelList');
     } catch (error) {
@@ -63,7 +69,7 @@ export default function TravelEdit({ route }) {
       {dateTravel ? (
         <TextInput
           label={'Data'}
-          value={dateTravel instanceof Date ? dateTravel.toISOString().split('T')[0] : dateTravel}
+          value={dateTravel /*instanceof Date ? dateTravel.toISOString().split('T')[0] : dateTravel*/}
           style={{ marginBottom: 10 }}
         />
       ) : (

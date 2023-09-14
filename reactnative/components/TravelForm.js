@@ -53,7 +53,12 @@ export default function TravelForm({ route }) {
       } else {
         response = await axios.post(url, travelData);
       }
-      console.log(response.data);
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: 'Cadastro realizado com sucesso.',
+        position: 'bottom'
+      });
       navigation.navigate('TravelList');
     } catch (error) {
       console.error(error);
