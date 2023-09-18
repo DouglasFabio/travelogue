@@ -29,12 +29,6 @@ const EntryList = ({ navigation, route }) => {
         navigation.navigate('EntryForm');
     }
 
-    const galeria = (travel) => {
-        navigation.navigate('ImageGallery', { travel });
-    };
-
-
-
     const onRefresh = () => {
         setRefreshing(true);
         fetchData();
@@ -57,7 +51,10 @@ const EntryList = ({ navigation, route }) => {
                                 left={(props) => <Avatar.Icon {...props} icon="wallet-travel" />}
                             />
                             <Card.Actions>
-                                <IconButton onPress={() => galeria(travel)} icon="image-multiple" />
+                                <IconButton
+                                    onPress={() => navigation.navigate('ImageGallery', { id: travel.id })}
+                                    icon="image-multiple"
+                                />
                             </Card.Actions>
                         </Card>
                     ))}

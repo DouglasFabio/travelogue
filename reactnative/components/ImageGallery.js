@@ -1,32 +1,45 @@
-import React from 'react';
-import { FlatList, Image, View } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import React, { useEffect, useState } from 'react';
+import { View, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { Button } from 'react-native-paper';
+import axios from 'axios';
 
-export default function ImageGallery({ images }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+export default function ImageGallery({ route }) {
+  const [images, setImages] = useState([]);
 
-  const renderItem = ({ item }) => (
-    <Image source={{ uri: item }} style={{ width: '100%', height: 200 }} />
-  );
+  let url = `http://10.0.2.2:5000/api/Imagem/${route.params.id}`;
+  console.log(route.params.id);
+
+  useEffect(() => {
+    axios.get(url) 
+      .then(response => {
+        let midiaPath = response.data.midiaPath;
+        console.log(response.data);
+        const images = midiaPath.split(',');
+        setImages(images);
+      })
+      .catch(error => console.error(error));
+  }, [route.params.id]);
+  
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImages([...images, result.uri]);
+    }
+  };
 
   return (
     <View>
-      <Carousel
-        data={images}
-        renderItem={renderItem}
-        sliderWidth={400}
-        itemWidth={300}
-        onSnapToItem={(index) => setActiveIndex(index)}
-      />
-      <FlatList
-        data={images}
-        horizontal
-        renderItem={({ item, index }) => (
-          <TouchableOpacity onPress={() => setActiveIndex(index)}>
-            <Image source={{ uri: item }} style={{ width: 50, height: 50 }} />
-          </TouchableOpacity>
-        )}
-      />
+      {images.map((image, index) => (
+        <Image key={index} source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      ))}
+      <Button title="Pick an image from gallery" onPress={pickImage} />
     </View>
   );
 }
