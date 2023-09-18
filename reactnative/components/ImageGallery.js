@@ -11,16 +11,19 @@ export default function ImageGallery({ route }) {
   console.log(route.params.id);
 
   useEffect(() => {
-    axios.get(url) 
+    axios.get(url)
       .then(response => {
         let midiaPath = response.data.midiaPath;
         console.log(response.data);
-        const images = midiaPath.split(',');
-        setImages(images);
+        if (midiaPath) {
+          const images = midiaPath.split(',');
+          setImages(images);
+        }
       })
       .catch(error => console.error(error));
+
   }, [route.params.id]);
-  
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
