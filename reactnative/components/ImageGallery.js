@@ -13,11 +13,13 @@ export default function ImageGallery({ route }) {
   useEffect(() => {
     axios.get(url)
       .then(response => {
-        let midiaPath = response.data.midiaPath;
+        let caminhos = response.data.midiaPath;
         console.log(response.data);
-        if (midiaPath) {
-          const images = midiaPath.split(',');
+        console.log(caminhos);
+        if (caminhos) {
+          const images = caminhos.split(',');
           setImages(images);
+          console.log(images);
         }
       })
       .catch(error => console.error(error));

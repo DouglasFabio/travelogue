@@ -26,7 +26,7 @@ const EntryList = ({ navigation, route }) => {
     };
 
     const AddEntry = () => {
-        navigation.navigate('EntryForm');
+        navigation.navigate('EntryForm', {id: travel.id});
     }
 
     const onRefresh = () => {

@@ -14,7 +14,9 @@ export default function EntryForm({ route }) {
   const [midiaPath, setMidiaPath] = useState('');
   const [codTravel, setCodTravel] = useState(route.params.travelId)
 
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
+
+  console.log(route.params.travelId);
 
   let url = `http://10.0.2.2:5000/api/Viagem/`;
 
