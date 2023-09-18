@@ -66,7 +66,7 @@ const TravelList = ({ navigation }) => {
               />
               <Card.Actions>
                 {travel.name ? (
-                  <Button onPress={() => navigation.navigate('EntryForm', { travelId: travel.id })}>Registrar entrada</Button>
+                  <Button onPress={() => navigation.navigate('EntryList', { travelId: travel.id })}>Ver entradas</Button>
                 ) : (
                   <Button buttonColor='lightcoral' onPress={() => navigation.navigate('TravelForm', { travelId: travel.id, dateTravel: travel.dateTravel })}>Completar cadastro</Button>
                 )}
