@@ -30,7 +30,7 @@ const TravelList = ({ navigation }) => {
   }
 
   const handleEdit = (travel) => {
-    navigation.navigate('TravelEdit', { travel });
+    navigation.navigate('TravelEdit', { travelId: travel.id });
   };
 
   const handleDelete = (id) => {
