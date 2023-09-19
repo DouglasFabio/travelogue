@@ -10,9 +10,6 @@ import Toast from 'react-native-toast-message';
 
 export default function EntryForm({ route }) {
 
-  ImagePicker.requestCameraPermissionsAsync();
-  ImagePicker.requestMediaLibraryPermissionsAsync();
-
   const [visitedLocal, setVisitedLocal] = useState('');
   const [dateVisit, setDateVisit] = useState(null);
   const [description, setDescription] = useState('');
@@ -78,6 +75,15 @@ export default function EntryForm({ route }) {
     }
   };
 
+  const permissaoGC = async () => {
+    const { status: cameraStatus } = await ImagePicker.requestCameraPermissionsAsync();
+    const { status: galeriaStatus } = await ImagePicker.requestPermissionsAsync();
+  
+    if (cameraStatus !== 'granted' || galeriaStatus !== 'granted') {
+      alert('Desculpe, precisamos de permissões de câmera e galeria para fazer isso funcionar!');
+    }
+  };
+
   const galeria = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -93,17 +99,21 @@ export default function EntryForm({ route }) {
   };
 
   const camera = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      result.assets.forEach(asset => {
-        setMidiaPath([...midiaPath, asset.uri]);
+    try {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
       });
+  
+      if (!result.cancelled) {
+        result.assets.forEach(asset => {
+          setMidiaPath([...midiaPath, asset.uri]);
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao abrir a câmera:', error);
     }
   };
 
@@ -140,6 +150,7 @@ export default function EntryForm({ route }) {
       />
       <Text style={{ fontSize: 20, textAlign: 'center' }}>Registro de imagens</Text>
       <Text style={{ fontSize: 16, textAlign: 'center' }}>{`Imagens selecionadas: ${midiaPath.length}`}</Text>
+      <Button icon="check" onPress={permissaoGC}>Permitir Galeria / Camera</Button>
       <Button icon="file" onPress={galeria}>Abrir Galeria</Button>
       <Button icon="camera" onPress={camera}>Abrir Câmera</Button>
       <Button icon="send" mode="contained" onPress={postEntry}>
