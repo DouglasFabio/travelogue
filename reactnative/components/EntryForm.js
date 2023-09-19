@@ -5,6 +5,8 @@ import { Button, Text, TextInput } from "react-native-paper";
 import { DatePickerInput } from "react-native-paper-dates";
 import { View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 export default function EntryForm({ route }) {
 
@@ -12,13 +14,12 @@ export default function EntryForm({ route }) {
   const [dateVisit, setDateVisit] = useState(null);
   const [description, setDescription] = useState('');
   const [midiaPath, setMidiaPath] = useState('');
-  const [codTravel, setCodTravel] = useState(route.params.travelId)
+  const [codTravel, setCodTravel] = useState()
 
   const navigation = useNavigation(); 
+  const idViagem = route.params.id;
 
-  console.log(route.params.travelId);
-
-  let url = `http://10.0.2.2:5000/api/Viagem/`;
+  let url = `http://10.0.2.2:5000/api/Entrada/`;
 
   const postEntry = async () => {
     try {
@@ -32,12 +33,13 @@ export default function EntryForm({ route }) {
         return;
       }
       const formattedDate = dateVisit.toISOString().split('T')[0];
+  
       const entryData = {
         visitedLocal: visitedLocal,
-        dateTravel: formattedDate,
+        dateVisit: formattedDate,
         description: description,
         midiaPath: midiaPath,
-        codTravel: route.params.travelId
+        codTravel: idViagem
       };
       response = await axios.post(url, entryData);
       Toast.show({
@@ -98,16 +100,24 @@ export default function EntryForm({ route }) {
         label={'Local visitado'}
         placeholder={'Digite o local visitado'}
         value={visitedLocal}
-        onChangeText={text => setName(text)}
+        onChangeText={text => setVisitedLocal(text)}
         style={{ marginBottom: 10 }}
       />
-      <DatePickerInput
-        locale="pt-br"
-        label={'Data Visita'}
-        onChange={date => setDateTravel(date)}
-        inputMode="start"
-        style={{ marginBottom: 10 }}
-      />
+      {dateVisit ? (
+        <TextInput
+          label={'Data Visita'}
+          value={dateVisit instanceof Date ? dateVisit.toISOString().split('T')[0] : dateVisit}
+          style={{ marginBottom: 10 }}
+        />
+      ) : (
+        <DatePickerInput
+          locale="pt-br"
+          label={'Data Visita'}
+          onChange={date => setDateVisit(date)}
+          inputMode="start"
+          style={{ marginBottom: 10 }}
+        />
+      )}
       <TextInput
         label={'Descrição'}
         placeholder={'Digite a descrição da visita'}
