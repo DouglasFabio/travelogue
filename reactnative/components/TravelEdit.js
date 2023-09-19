@@ -10,14 +10,13 @@ export default function TravelEdit({ route }) {
   const [name, setName] = useState('');
   const [dateTravel, setDateTravel] = useState(route.params?.dateTravel || null);
   const [load, setLoad] = useState(false);
-  const dateTravelRef = useRef(dateTravel);
 
   const navigation = useNavigation();
 
   let url = `http://10.0.2.2:5000/api/Viagem/`;
 
   useEffect(() => {
-    if (route.params?.travelId && !dateTravelRef.current) {
+    if (route.params?.travelId) {
       axios.get(`${url}${route.params.travelId}`)
         .then(response => {
           setName(response.data.name);
