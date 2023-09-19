@@ -4,19 +4,23 @@ import React, { useEffect, useState } from 'react';
 import { Button, Text, TextInput } from "react-native-paper";
 import { DatePickerInput } from "react-native-paper-dates";
 import { View } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 
 export default function EntryForm({ route }) {
 
+  ImagePicker.requestCameraPermissionsAsync();
+  ImagePicker.requestMediaLibraryPermissionsAsync();
+
   const [visitedLocal, setVisitedLocal] = useState('');
   const [dateVisit, setDateVisit] = useState(null);
   const [description, setDescription] = useState('');
   const [midiaPath, setMidiaPath] = useState('');
-  const [codTravel, setCodTravel] = useState()
+  const [codTravel, setCodTravel] = useState();
 
-  const navigation = useNavigation(); 
+
+  const navigation = useNavigation();
   const idViagem = route.params.id;
 
   let url = `http://10.0.2.2:5000/api/Entrada/`;
@@ -32,13 +36,33 @@ export default function EntryForm({ route }) {
         });
         return;
       }
+      if (midiaPath.length === 0) {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro',
+          text2: 'Por favor, selecione uma imagem.',
+          position: 'bottom'
+        });
+        return;
+      }
+      if(visitedLocal === "" || description === ""){
+        Toast.show({
+          type: 'error',
+          text1: 'Erro',
+          text2: 'Por favor, preencha todos os campos!',
+          position: 'bottom'
+        });
+        return;
+      }
+
       const formattedDate = dateVisit.toISOString().split('T')[0];
-  
+      let midiaPathString = midiaPath.join(',');
+
       const entryData = {
         visitedLocal: visitedLocal,
         dateVisit: formattedDate,
         description: description,
-        midiaPath: midiaPath,
+        midiaPath: midiaPathString,
         codTravel: idViagem
       };
       response = await axios.post(url, entryData);
@@ -54,44 +78,33 @@ export default function EntryForm({ route }) {
     }
   };
 
-  const galeria = () => {
-    const options = {
-      title: 'Selecione uma imagem',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-
-    ImagePicker.launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('O usuário cancelou a seleção de imagem');
-      } else if (response.error) {
-        console.log('Erro na seleção de imagem: ', response.error);
-      } else {
-        console.log('Caminho da imagem selecionada: ', response.path);
-      }
+  const galeria = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      quality: 1,
     });
+
+    if (!result.cancelled) {
+      result.assets.forEach(asset => {
+        setMidiaPath([...midiaPath, asset.uri]);
+      });
+    }
   };
 
-  const camera = () => {
-    const options = {
-      title: 'Tire uma foto',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-
-    ImagePicker.launchCamera(options, (response) => {
-      if (response.didCancel) {
-        console.log('O usuário cancelou a captura da foto');
-      } else if (response.error) {
-        console.log('Erro na captura da foto: ', response.error);
-      } else {
-        console.log('Caminho da foto capturada: ', response.path);
-      }
+  const camera = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
     });
+
+    if (!result.cancelled) {
+      result.assets.forEach(asset => {
+        setMidiaPath([...midiaPath, asset.uri]);
+      });
+    }
   };
 
   return (
@@ -125,7 +138,8 @@ export default function EntryForm({ route }) {
         onChangeText={text => setDescription(text)}
         style={{ marginBottom: 10 }}
       />
-      <Text style={{fontSize: 20, textAlign: 'center'}}>Registro de imagens</Text>
+      <Text style={{ fontSize: 20, textAlign: 'center' }}>Registro de imagens</Text>
+      <Text style={{ fontSize: 16, textAlign: 'center' }}>{`Imagens selecionadas: ${midiaPath.length}`}</Text>
       <Button icon="file" onPress={galeria}>Abrir Galeria</Button>
       <Button icon="camera" onPress={camera}>Abrir Câmera</Button>
       <Button icon="send" mode="contained" onPress={postEntry}>
