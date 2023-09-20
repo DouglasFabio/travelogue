@@ -16,7 +16,7 @@ const EntryList = ({ navigation, route }) => {
     }, []);
 
     const fetchData = () => {
-        axios.get(`${url}${route.params.travelId}`)
+        axios.get(`${url}/${route.params.travelId}`)
             .then(response => {
                 setData(response.data);
                 setRefreshing(false);

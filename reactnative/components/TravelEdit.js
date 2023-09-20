@@ -5,7 +5,6 @@ import { DatePickerInput } from 'react-native-paper-dates';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import LocalAuthentication from 'react-native-local-auth';
 import { EXPO_PUBLIC_API_URL_HTTP_V } from '../env';
 
 export default function TravelEdit({ route }) {
@@ -19,7 +18,7 @@ export default function TravelEdit({ route }) {
 
   useEffect(() => {
     if (route.params?.travelId) {
-      axios.get(`${url}${route.params.travelId}`)
+      axios.get(`${url}/${route.params.travelId}`)
         .then(response => {
           setName(response.data.name);
           setDateTravel(new Date(response.data.dateTravel));
@@ -41,33 +40,22 @@ export default function TravelEdit({ route }) {
         return;
       }
 
-      //LocalAuthentication.authenticate('Autorizar ação')
-      //  .then(async success => {
-          const formattedDate = dateTravel.toISOString().split('T')[0];
-          const travelData = {
-            id: route.params.travelId,
-            name: name,
-            dateTravel: formattedDate,
-          };
-          let response = await axios.put(`${url}${route.params.travelId}`, travelData);
-          Toast.show({
-            type: 'success',
-            text1: 'Sucesso',
-            text2: JSON.stringify(response.data),
-            position: 'bottom'
-          });
-          console.log(response.data);
-          navigation.navigate('TravelList');
-       // }
-       // )
-       // .catch(error => {
-       //   Toast.show({
-       //     type: 'error',
-       //     text1: 'Erro',
-       //     text2: 'Falha ao autenticar',
-       //     position: 'bottom'
-       //   });
-       // });
+      const formattedDate = dateTravel.toISOString().split('T')[0];
+      const travelData = {
+        id: route.params.travelId,
+        name: name,
+        dateTravel: formattedDate,
+      };
+      let response = await axios.put(`${url}/${route.params.travelId}`, travelData);
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: JSON.stringify(response.data),
+        position: 'bottom'
+      });
+      console.log(response.data);
+      navigation.navigate('TravelList');
+
     }
     catch (error) {
       console.error(error);

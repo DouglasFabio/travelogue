@@ -17,7 +17,7 @@ export default function TravelForm({ route }) {
 
   useEffect(() => {
     if (route.params?.travelId) {
-      axios.get(`${url}${route.params.travelId}`)
+      axios.get(`${url}/${route.params.travelId}`)
         .then(response => {
           setName(response.data.name);
           setDateTravel(new Date(response.data.dateTravel));
@@ -50,7 +50,7 @@ export default function TravelForm({ route }) {
           name: name,
           dateTravel: formattedDate,
         };
-        response = await axios.put(`${url}${route.params.travelId}`, travelData);
+        response = await axios.put(`${url}/${route.params.travelId}`, travelData);
       } else {
         response = await axios.post(url, travelData);
       }
