@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, RefreshControl } from 'react-native';
 import { Avatar, Card, Button, IconButton, FAB } from 'react-native-paper';
 import axios from 'axios';
+import LocalAuthentication from 'react-native-local-auth';
 
 const TravelList = ({ navigation }) => {
 
@@ -34,10 +35,22 @@ const TravelList = ({ navigation }) => {
   };
 
   const handleDelete = (id) => {
+    //LocalAuthentication.authenticate('Autorizar ação')
+    //  .then(async success => {
     axios.delete(`${url}${id}`)
       .then(response => {
         setData(data.filter(travel => travel.id !== id));
       })
+      // }
+      // )
+      // .catch(error => {
+      //   Toast.show({
+      //     type: 'error',
+      //     text1: 'Erro',
+      //     text2: 'Falha ao autenticar',
+      //     position: 'bottom'
+      //   });
+      // });
       .catch(error => {
         console.log(error);
       });

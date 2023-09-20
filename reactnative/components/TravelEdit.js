@@ -5,6 +5,7 @@ import { DatePickerInput } from 'react-native-paper-dates';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import LocalAuthentication from 'react-native-local-auth';
 
 export default function TravelEdit({ route }) {
   const [name, setName] = useState('');
@@ -38,22 +39,36 @@ export default function TravelEdit({ route }) {
         });
         return;
       }
-      const formattedDate = dateTravel.toISOString().split('T')[0];
-      const travelData = {
-        id: route.params.travelId,
-        name: name,
-        dateTravel: formattedDate,
-      };
-      let response = await axios.put(`${url}${route.params.travelId}`, travelData);
-      Toast.show({
-        type: 'success',
-        text1: 'Sucesso',
-        text2: JSON.stringify(response.data),
-        position: 'bottom'
-      });
-      console.log(response.data);
-      navigation.navigate('TravelList');
-    } catch (error) {
+
+      //LocalAuthentication.authenticate('Autorizar ação')
+      //  .then(async success => {
+          const formattedDate = dateTravel.toISOString().split('T')[0];
+          const travelData = {
+            id: route.params.travelId,
+            name: name,
+            dateTravel: formattedDate,
+          };
+          let response = await axios.put(`${url}${route.params.travelId}`, travelData);
+          Toast.show({
+            type: 'success',
+            text1: 'Sucesso',
+            text2: JSON.stringify(response.data),
+            position: 'bottom'
+          });
+          console.log(response.data);
+          navigation.navigate('TravelList');
+       // }
+       // )
+       // .catch(error => {
+       //   Toast.show({
+       //     type: 'error',
+       //     text1: 'Erro',
+       //     text2: 'Falha ao autenticar',
+       //     position: 'bottom'
+       //   });
+       // });
+    }
+    catch (error) {
       console.error(error);
     }
   };
@@ -67,18 +82,18 @@ export default function TravelEdit({ route }) {
         onChangeText={text => setName(text)}
         style={{ marginBottom: 10 }}
       />
-        <TextInput disabled
-          label={'Data'}
-          value={dateTravel instanceof Date ? dateTravel.toISOString().split('T')[0] : dateTravel}
-          style={{ marginBottom: 10 }}
-        />
-        <DatePickerInput
-          locale="pt-br"
-          label={'Data Nova'}
-          onChange={date => setDateTravel(date)}
-          inputMode="start"
-          style={{ marginBottom: 10 }}
-        />
+      <TextInput disabled
+        label={'Data'}
+        value={dateTravel instanceof Date ? dateTravel.toISOString().split('T')[0] : dateTravel}
+        style={{ marginBottom: 10 }}
+      />
+      <DatePickerInput
+        locale="pt-br"
+        label={'Data Nova'}
+        onChange={date => setDateTravel(date)}
+        inputMode="start"
+        style={{ marginBottom: 10 }}
+      />
       <Button icon="send" mode="contained" onPress={putTravel}>
         Atualizar
       </Button>

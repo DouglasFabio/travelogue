@@ -27,6 +27,7 @@
     "react-native": "0.71.8",
     "react-native-image-picker": "^7.0.0",
     "react-native-image-zoom-viewer": "^3.0.1",
+    "react-native-local-auth": "^1.7.0",
     "react-native-paper": "^5.10.1",
     "react-native-paper-dates": "^0.18.13",
     "react-native-paper-form-builder": "^2.1.2",

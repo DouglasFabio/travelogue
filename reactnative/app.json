@@ -15,7 +15,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Este app utiliza a câmera para evitar a digitação do PIN"
+      }
     },
     "android": {
       "adaptiveIcon": {

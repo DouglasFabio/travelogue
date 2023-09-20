@@ -7524,6 +7524,11 @@ react-native-image-zoom-viewer@^3.0.1:
   dependencies:
     react-native-image-pan-zoom "^2.1.12"
 
+react-native-local-auth@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-local-auth/-/react-native-local-auth-1.7.0.tgz#a1d66280e000fb66fc938c582f4d27090482750c"
+  integrity sha512-0Bxj0nQow0oMAooAJtQy/+L17YcJL2+sO6jqrVCuZbWaHQXR+wQf3N/H2xNPd65DRwNKCZKoYDpTgqLJ3dXQDg==
+
 react-native-paper-dates@^0.18.13:
   version "0.18.14"
   resolved "https://registry.npmjs.org/react-native-paper-dates/-/react-native-paper-dates-0.18.14.tgz"
