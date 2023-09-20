@@ -3,10 +3,13 @@ import { View, ScrollView, RefreshControl } from 'react-native';
 import { Avatar, Card, Button, IconButton, FAB } from 'react-native-paper';
 import axios from 'axios';
 import LocalAuthentication from 'react-native-local-auth';
+import { EXPO_PUBLIC_API_URL_HTTP_V } from '../env';
 
 const TravelList = ({ navigation }) => {
 
-  let url = `http://10.0.2.2:5000/api/Viagem/`;
+  let url = EXPO_PUBLIC_API_URL_HTTP_V;
+
+  console.log(url);
 
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, RefreshControl } from 'react-native';
 import { Avatar, Card, Button, IconButton, FAB } from 'react-native-paper';
 import axios from 'axios';
+import { EXPO_PUBLIC_API_URL_HTTP_E } from '../env';
 
 const EntryList = ({ navigation, route }) => {
 
-    let url = `http://10.0.2.2:5000/api/Entrada/`;
+    let url = EXPO_PUBLIC_API_URL_HTTP_E;
 
     const [data, setData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);

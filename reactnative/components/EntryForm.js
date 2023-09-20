@@ -7,6 +7,7 @@ import { View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
+import { EXPO_PUBLIC_API_URL_HTTP_E } from '../env';
 
 export default function EntryForm({ route }) {
 
@@ -20,7 +21,7 @@ export default function EntryForm({ route }) {
   const navigation = useNavigation();
   const idViagem = route.params.id;
 
-  let url = `http://10.0.2.2:5000/api/Entrada/`;
+  let url = EXPO_PUBLIC_API_URL_HTTP_E;
 
   const postEntry = async () => {
     try {

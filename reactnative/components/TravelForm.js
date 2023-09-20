@@ -5,6 +5,7 @@ import { DatePickerInput } from 'react-native-paper-dates';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import { EXPO_PUBLIC_API_URL_HTTP_V } from '../env';
 
 export default function TravelForm({ route }) {
   const [name, setName] = useState('');
@@ -12,7 +13,7 @@ export default function TravelForm({ route }) {
 
   const navigation = useNavigation();
 
-  let url = `http://10.0.2.2:5000/api/Viagem/`;
+  let url = EXPO_PUBLIC_API_URL_HTTP_V;
 
   useEffect(() => {
     if (route.params?.travelId) {
