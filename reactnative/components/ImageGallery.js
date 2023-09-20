@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, FlatList, Image } from 'react-native';
 import ImageView from 'react-native-image-zoom-viewer';
 import axios from 'axios';
+import { EXPO_PUBLIC_API_URL_HTTP_I } from '../env';
 
 export default function ImageGallery({ route }) {
   const [images, setImages] = useState([]);
   const [imageIndex, setImageIndex] = useState(0);
   const [isImageViewVisible, setIsImageViewVisible] = useState(false);
 
-  let url = `http://10.0.2.2:5000/api/Imagem/${route.params.id}`;
+  let url = EXPO_PUBLIC_API_URL_HTTP_I +`/${route.params.id}`;
+
+  
 
   useEffect(() => {
     axios.get(url)
