@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:travelogue/routes/app_routes.dart';
 import 'package:travelogue/views/entry_form.dart';
 import 'package:travelogue/views/entry_gallery.dart';
@@ -27,13 +28,13 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //localizationsDelegates: const [
-      //  GlobalMaterialLocalizations.delegate,
-      //  GlobalWidgetsLocalizations.delegate,
-      //],
-      //supportedLocales: const [
-      //  Locale('pt', 'BR'),
-      //],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
       debugShowCheckedModeBanner: false,
       title: 'Travelogue Dev Mob. II',
       theme: ThemeData(

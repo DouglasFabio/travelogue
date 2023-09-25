@@ -17,18 +17,18 @@ class _TravelEditState extends State<TravelEdit> {
   DateTime? _dateTravel;
   final LocalAuthentication _localAuth = LocalAuthentication();
 
-  //Future<bool> _authenticateUser() async {
-  //  bool authenticated = false;
-  //  try {
-  //    authenticated = await _localAuth.authenticate(
-  //       localizedReason: 'Por favor, autentique para atualizar os dados',
-  //        options: const AuthenticationOptions(
-  //            useErrorDialogs: true, stickyAuth: true));
-  // } catch (e) {
-  //    print(e);
-  //  }
-  //  return authenticated;
-  //}
+  Future<bool> _authenticateUser() async {
+    bool authenticated = false;
+    try {
+      authenticated = await _localAuth.authenticate(
+         localizedReason: 'Por favor, autentique para atualizar os dados',
+          options: const AuthenticationOptions(
+              useErrorDialogs: true, stickyAuth: true));
+   } catch (e) {
+      print(e);
+    }
+    return authenticated;
+  }
 
   @override
   void didChangeDependencies() {
@@ -58,17 +58,17 @@ class _TravelEditState extends State<TravelEdit> {
         'dateTravel': _dateTravel
       };
 
-      //bool didAuthenticate = await _authenticateUser();
+      bool didAuthenticate = await _authenticateUser();
 
-      //if (didAuthenticate) {
+      if (didAuthenticate) {
         await putTravel(idTravel, formData);
         if (mounted) {
           Navigator.of(context)
               .popUntil(ModalRoute.withName(Navigator.defaultRouteName));
         }
-      //} else {
-      //  print('Falha na autenticação do usuário');
-      //}
+      } else {
+        print('Falha na autenticação do usuário');
+      }
     }
   }
 
