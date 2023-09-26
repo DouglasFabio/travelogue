@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:travelogue/routes/app_routes.dart';
+import 'package:travelogue/views/entry_edit.dart';
 import 'package:travelogue/views/entry_form.dart';
 import 'package:travelogue/views/entry_gallery.dart';
 import 'package:travelogue/views/travel_edit_form.dart';
@@ -47,7 +48,8 @@ class MainApp extends StatelessWidget {
         AppRoutes.TRAVEL_EDIT: (context) => const TravelEdit(),
         AppRoutes.TRAVEL_SEARCH: (context) => const TravelSearch(),
         AppRoutes.ENTRY_FORM:(context) => const EntryForm(),
-        AppRoutes.ENTRY_GALLERY:(context) => const EntryGallery()
+        AppRoutes.ENTRY_GALLERY:(context) => const EntryGallery(),
+        AppRoutes.ENTRY_EDIT:(context) => const EntryEdit()
       },
     );
   }

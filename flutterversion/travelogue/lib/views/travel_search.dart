@@ -27,6 +27,17 @@ void didChangeDependencies() {
     });
   }
 
+  Future<void> _removerEntrada (String id) async {
+    //bool didAuthenticate = await _authenticateUser();
+
+    //if (didAuthenticate) {
+    await deleteEntry(id);
+    _buscarDadosDaAPI(id);
+    //} else {
+      //  print('Falha na autenticação do usuário');
+      //}
+  }
+
   @override
   Widget build(BuildContext context) {
     final idViagemSelecionada =
@@ -57,7 +68,7 @@ void didChangeDependencies() {
             title: Text(_dados[i]['visitedLocal']),
             subtitle: Text(_dados[i]['dateVisit']),
             trailing: SizedBox(
-              width: 100,
+              width: 150,
               child: Row(
                 children: <Widget>[
                   IconButton(
@@ -67,6 +78,19 @@ void didChangeDependencies() {
                     ),
                     icon: const Icon(Icons.collections),
                     color: Colors.blue,
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pushNamed(
+                      AppRoutes.ENTRY_EDIT,
+                      arguments: _dados[i]['id'],
+                    ),
+                    icon: const Icon(Icons.edit),
+                    color: Colors.blue,
+                  ),
+                  IconButton(
+                    onPressed: () => _removerEntrada(_dados[i]['id']),
+                    icon: const Icon(Icons.delete),
+                    color: Colors.red,
                   ),
                 ],
               ),

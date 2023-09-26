@@ -3,14 +3,14 @@ import 'package:intl/intl.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:travelogue/services/travel_services.dart';
 
-class TravelEdit extends StatefulWidget {
-  const TravelEdit({Key? key}) : super(key: key);
+class EntryEdit extends StatefulWidget {
+  const EntryEdit({Key? key}) : super(key: key);
 
   @override
-  _TravelEditState createState() => _TravelEditState();
+  _EntryEditState createState() => _EntryEditState();
 }
 
-class _TravelEditState extends State<TravelEdit> {
+class _EntryEditState extends State<EntryEdit> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
   String _title = '';
