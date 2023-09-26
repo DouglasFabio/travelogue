@@ -15,8 +15,6 @@ export default function EntryEdit({ route }) {
     const [description, setDescription] = useState(route.params.description || '');
     const [midiaPath, setMidiaPath] = useState('');
     const [codTravel, setCodTravel] = useState(route.params.codTravel || '');
-    const [load, setLoad] = useState(false);
-    console.log(route.params.entryId);
     const navigation = useNavigation();
 
     let urlGet = EXPO_PUBLIC_API_URL_HTTP_EE;
@@ -25,15 +23,15 @@ export default function EntryEdit({ route }) {
         if (route.params?.entryId) {
             axios.get(`${urlGet}/${route.params.entryId}`)
                 .then(response => {
-                    setVisitedLocal(response.data.visitedLocal);
-                    setDescription(response.data.description);
-                    setDateVisit(new Date(response.data.dateVisit));
-                    setCodTravel(response.data.codTravel);
-                    setLoad(true);
+                    setVisitedLocal(route.params.visitedLocal);
+                    setDescription(route.params.description);
+                    setDateVisit(route.params.dateVisit);
+                    setCodTravel(route.params.codTravel);
+
                 })
                 .catch(error => console.error(error));
         }
-    }, [load]);
+    },[route.params.entryId]);
 
     const putEntry = async () => {
         try {
@@ -77,6 +75,8 @@ export default function EntryEdit({ route }) {
                 codTravel: codTravel
             };
             
+            console.log(entryData);
+
             let response = await axios.put(`${urlPut}/${route.params.entryId}`, entryData);
             Toast.show({
                 type: 'success',
@@ -84,7 +84,7 @@ export default function EntryEdit({ route }) {
                 text2: JSON.stringify(response.data),
                 position: 'bottom'
             });
-            navigation.navigate('EntryList');
+            navigation.navigate('TravelList');
 
         }
         catch (error) {
