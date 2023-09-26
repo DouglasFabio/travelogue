@@ -44,8 +44,8 @@ Future<List> getEntry(String idViagem) async {
 
 }
 
-Future<List> getEntryEdit(String idEntry) async {
-  final url = '$urlEditaEntrada$idEntry';
+Future<List<dynamic>> getEntryEdit(String id) async {
+  final url = '$urlEditaEntrada$id';
   var response = await http.get(Uri.parse(url));
 
   if(response.statusCode == 200){
@@ -53,6 +53,7 @@ Future<List> getEntryEdit(String idEntry) async {
   }else{
     throw Exception('Erro ao carregar');
   }
+
 }
 
 Future<void> postEntry(Map<String, dynamic> formData) async {
@@ -109,6 +110,6 @@ Future<void> putEntry(String id, Map<String, dynamic> formData) async {
   if (response.statusCode == 200) {
     // Item atualizado com sucesso
   } else {
-    // Houve um erro ao atualizar o item
+    print('Erro ao editar os dados: ${response.statusCode}');
   }
 }

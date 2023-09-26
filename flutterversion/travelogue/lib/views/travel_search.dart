@@ -32,7 +32,9 @@ void didChangeDependencies() {
 
     //if (didAuthenticate) {
     await deleteEntry(id);
-    _buscarDadosDaAPI(id);
+    final idViagemSelecionada =
+      ModalRoute.of(context)!.settings.arguments as String;
+  _buscarDadosDaAPI(idViagemSelecionada);
     //} else {
       //  print('Falha na autenticação do usuário');
       //}

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +18,11 @@ class _EntryEditState extends State<EntryEdit> {
   DateTime? _dateVisit;
   String _description = '';
   String _midiaPath = '';
+  String _codTravel = '';
   List<String> _imagePaths = [];
+  TextEditingController setVisitedLocal = TextEditingController();
+  TextEditingController setDescription = TextEditingController();
+  
   bool _btnClicked = false;
   TextStyle _registroImagensStyle =
       const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
@@ -73,10 +76,11 @@ class _EntryEditState extends State<EntryEdit> {
     final travelData = await getEntryEdit(idEntry);
     if (this.mounted) {
       setState(() {
-        //_id = travelData['id'];
-        //_visitedLocal = travelData['visitedLocal'];
-        //controladorTexto.text = _name;
-        //_dateTravel = travelData['dateTravel'];
+        _visitedLocal = travelData[0]['visitedLocal'];
+        setVisitedLocal.text = _visitedLocal;
+        _description = travelData[0]['description'];
+        _codTravel = travelData[0]['codTravel'];
+        setDescription.text = _description;
       });
     }
   }
@@ -91,7 +95,8 @@ class _EntryEditState extends State<EntryEdit> {
         'visitedLocal': _visitedLocal,
         'dateVisit': _dateVisit,
         'description': _description,
-        'midiaPath': _midiaPath
+        'midiaPath': _midiaPath,
+        'codTravel': _codTravel
       };
 
       //bool didAuthenticate = await _authenticateUser();
@@ -138,6 +143,30 @@ class _EntryEditState extends State<EntryEdit> {
                       ? DateFormat('yyyy-MM-dd').format(_dateVisit!)
                       : null,
                 };
+                if (_imagePaths.isEmpty) {
+                  // Altere a cor do texto para vermelho e exiba um alerta
+                  setState(() {
+                    _registroImagensStyle = const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red);
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Erro'),
+                        content: const Text(
+                            'Por favor, selecione pelo menos uma imagem.'),
+                        actions: [
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+                  return;
+                }
                 _atualizarEntrada(formData);
                 Navigator.of(context).pop();
               }
@@ -152,6 +181,7 @@ class _EntryEditState extends State<EntryEdit> {
             key: _formKey,
             child: Column(children: [
               TextFormField(
+                controller: setVisitedLocal,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Preencha este campo';
@@ -162,6 +192,7 @@ class _EntryEditState extends State<EntryEdit> {
                 onSaved: (value) => _visitedLocal = value!,
               ),
               TextFormField(
+                controller: setDescription,
                 maxLines: null,
                 validator: (value) {
                   if (value == null || value.isEmpty) {

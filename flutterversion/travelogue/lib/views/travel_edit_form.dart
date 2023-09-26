@@ -14,7 +14,7 @@ class _TravelEditState extends State<TravelEdit> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
   String _title = '';
-  TextEditingController controladorTexto = TextEditingController();
+  TextEditingController setName = TextEditingController();
   DateTime? _dateTravel;
   final LocalAuthentication _localAuth = LocalAuthentication();
 
@@ -44,8 +44,7 @@ class _TravelEditState extends State<TravelEdit> {
       setState(() {
         _name = travelData['name'];
         _title = travelData['name'];
-        controladorTexto.text = _name;
-        //_dateTravel = travelData['dateTravel'];
+        setName.text = _name;
       });
     }
   }
@@ -121,7 +120,7 @@ class _TravelEditState extends State<TravelEdit> {
                     CrossAxisAlignment.start, // Alinha os widgets à esquerda
                 children: [
                   TextFormField(
-                    controller: controladorTexto,
+                    controller: setName,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Preencha este campo';
