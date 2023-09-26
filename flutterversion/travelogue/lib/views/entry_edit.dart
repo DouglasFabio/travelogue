@@ -1,174 +1,193 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:travelogue/services/travel_services.dart';
+import 'package:travelogue/services/entries_services.dart';
+import 'package:travelogue/views/travel_edit_form.dart';
 
 class EntryEdit extends StatefulWidget {
   const EntryEdit({Key? key}) : super(key: key);
 
   @override
-  _EntryEditState createState() => _EntryEditState();
+  _TravelEditState createState() => _TravelEditState();
 }
 
-class _EntryEditState extends State<EntryEdit> {
-  final _formKey = GlobalKey<FormState>();
-  String _name = '';
-  String _title = '';
-  TextEditingController controladorTexto = TextEditingController();
-  DateTime? _dateTravel;
-  final LocalAuthentication _localAuth = LocalAuthentication();
+class _TravelEditState extends State<TravelEdit> {
+  final _form = GlobalKey<FormState>();
+  String _visitedLocal = '';
+  DateTime? _dateVisit;
+  String _description = '';
+  String _midiaPath = '';
+  List<String> _imagePaths = [];
+  bool _btnClicked = false;
+  TextStyle _registroImagensStyle =
+      const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
 
-  //Future<bool> _authenticateUser() async {
-  //  bool authenticated = false;
-  //  try {
-  //    authenticated = await _localAuth.authenticate(
-  //       localizedReason: 'Por favor, autentique para atualizar os dados',
-  //        options: const AuthenticationOptions(
-  //            useErrorDialogs: true, stickyAuth: true));
-  // } catch (e) {
-  //    print(e);
-  //  }
-  //  return authenticated;
- // }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final idTravel = ModalRoute.of(context)!.settings.arguments as String;
-    _loadData(idTravel);
-  }
-
-  Future<void> _loadData(String idTravel) async {
-    final travelData = await getOneTravel(idTravel);
-    if (this.mounted) {
+  Future<void> _pickImages() async {
+    final picker = ImagePicker();
+    final pickedFiles = await picker.pickMultiImage();
+    if (pickedFiles != null) {
       setState(() {
-        _name = travelData['name'];
-        _title = travelData['name'];
-        controladorTexto.text = _name;
-        //_dateTravel = travelData['dateTravel'];
+        _imagePaths = pickedFiles.map((file) => file.path).toList();
+        _midiaPath = _imagePaths.join(',');
+        _btnClicked = true;
       });
     }
   }
 
-  Future<void> _atualizarViagem(formData) async {
-    final isValid = _formKey.currentState!.validate();
-    if (isValid) {
-      _formKey.currentState!.save();
-      final idTravel = ModalRoute.of(context)!.settings.arguments as String;
-      final formData = {
-        'id': idTravel,
-        'name': _name,
-        'dateTravel': _dateTravel
-      };
-
-      //bool didAuthenticate = await _authenticateUser();
-
-      //if (didAuthenticate) {
-        await putTravel(idTravel, formData);
-        if (mounted) {
-          Navigator.of(context)
-              .popUntil(ModalRoute.withName(Navigator.defaultRouteName));
-        }
-      //} else {
-      //  print('Falha na autenticação do usuário');
-      //}
+  Future<void> _camera() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _imagePaths.add(pickedFile.path);
+        _midiaPath = _imagePaths.join(',');
+        _btnClicked = true;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final idTravel = ModalRoute.of(context)!.settings.arguments as String;
-    getOneTravel(idTravel);
-
+    final idViagemSelecionada =
+        ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar - $_title'),
+        title: const Text("Nova Entrada"),
         actions: [
           IconButton(
             onPressed: () {
-              if (_dateTravel == null) {
+              if (_dateVisit == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                       content: Text('Por favor, selecione uma data.')),
                 );
                 return;
               }
-              final isValid = _formKey.currentState!.validate();
+              final isValid = _form.currentState!.validate();
               if (isValid) {
-                _formKey.currentState?.save();
+                _form.currentState?.save();
                 final formData = {
-                  'name': _name,
-                  'dateTravel': _dateTravel != null
-                      ? DateFormat('yyyy-MM-dd').format(_dateTravel!)
-                      : null,
+                  'visitedLocal': _visitedLocal,
+                  'dateVisit': _dateVisit,
+                  'description': _description,
+                  'midiaPath': _midiaPath,
+                  'codTravel': idViagemSelecionada
                 };
-                _atualizarViagem(formData);
+                if (_imagePaths.isEmpty) {
+                  // Altere a cor do texto para vermelho e exiba um alerta
+                  setState(() {
+                    _registroImagensStyle = const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red);
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Erro'),
+                        content: const Text(
+                            'Por favor, selecione pelo menos uma imagem.'),
+                        actions: [
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+                  return;
+                }
+                postEntry(formData);
                 Navigator.of(context).pop();
               }
             },
             icon: const Icon(Icons.save),
-          ),
+          )
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, // Alinha os widgets à esquerda
+          padding: const EdgeInsets.all(15),
+          child: Form(
+            key: _form,
+            child: Column(children: [
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Preencha este campo';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(labelText: 'Local visitado'),
+                onSaved: (value) => _visitedLocal = value!,
+              ),
+              TextFormField(
+                maxLines: null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Preencha este campo';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(labelText: 'Descrição'),
+                onSaved: (value) => _description = value!,
+              ),
+              Row(
                 children: [
-                  TextFormField(
-                    controller: controladorTexto,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Preencha este campo';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(labelText: 'Nome'),
-                    onSaved: (value) => _name = value!,
+                  const Text(
+                    'Data:',
+                    style: TextStyle(fontSize: 18, color: Colors.black),
                   ),
-                  Row(
-                    children: [
-                      const Text(
-                        'Data:',
-                        style: TextStyle(fontSize: 18, color: Colors.black),
-                      ),
-                      const SizedBox(
-                          width:
-                              14), // Adiciona algum espaço entre o rótulo e o texto
-                      TextButton(
-                        onPressed: () async {
-                          final selectedDate = await showDatePicker(
-                            context: context,
-                            initialDate: _dateTravel ?? DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime(2100),
-                          );
-                          if (selectedDate != null) {
-                            setState(() {
-                              _dateTravel = selectedDate;
-                            });
-                          }
-                        },
-                        child: Text(
-                          _dateTravel != null
-                              ? DateFormat('dd/MM/yyyy').format(_dateTravel!)
-                              : 'Selecione a Data da Viagem',
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      ),
-                    ],
+                  const SizedBox(
+                      width:
+                          14), // Adiciona algum espaço entre o rótulo e o texto
+                  TextButton(
+                    onPressed: () async {
+                      final selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: _dateVisit ?? DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100),
+                      );
+                      if (selectedDate != null) {
+                        setState(() {
+                          _dateVisit = selectedDate;
+                        });
+                      }
+                    },
+                    child: Text(
+                      _dateVisit != null
+                          ? DateFormat('dd/MM/yyyy').format(_dateVisit!)
+                          : 'Selecione a Data da Visita',
+                      style: const TextStyle(fontSize: 18),
+                    ),
                   ),
                 ],
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+              const SizedBox(height: 26), // Adiciona um espaço entre os widgets
+              Text(
+                'REGISTRO DE IMAGENS',
+                style: _registroImagensStyle,
+              ),
+              ElevatedButton(
+                onPressed: _pickImages,
+                child: const Text('Abrir galeria'),
+              ),
+              ElevatedButton(
+                onPressed: _camera,
+                child: const Icon(Icons.camera_alt),
+              ),
+              ..._imagePaths.map(
+                (path) => InteractiveViewer(
+                  child: Image.file(
+                    File(path),
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+              ),
+            ]),
+          )),
     );
   }
 }
