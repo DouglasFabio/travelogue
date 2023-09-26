@@ -31,7 +31,7 @@ export default function EntryEdit({ route }) {
                 })
                 .catch(error => console.error(error));
         }
-    },[route.params.entryId]);
+    }, [route.params.entryId]);
 
     const putEntry = async () => {
         try {
@@ -74,8 +74,6 @@ export default function EntryEdit({ route }) {
                 midiaPath: midiaPathString,
                 codTravel: codTravel
             };
-            
-            console.log(entryData);
 
             let response = await axios.put(`${urlPut}/${route.params.entryId}`, entryData);
             Toast.show({
