@@ -81,3 +81,22 @@ Future<void> deleteEntry(String id) async {
     print('Erro ao deletar os dados: ${response.statusCode}');
   }
 }
+
+Future<void> putEntry(String id, Map<String, dynamic> formData) async {
+  final url = '$urlEntrada$id';
+  final headers = {'Content-Type': 'application/json'};
+  final body = json.encode(formData, toEncodable: (value) {
+    if (value is DateTime) {
+      return value.toIso8601String().substring(0,10);
+    }
+    return value;
+  });
+
+  final response = await http.put(Uri.parse(url), headers: headers, body: body);
+
+  if (response.statusCode == 200) {
+    // Item atualizado com sucesso
+  } else {
+    // Houve um erro ao atualizar o item
+  }
+}
