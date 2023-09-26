@@ -8,6 +8,7 @@ import EntryForm from './components/EntryForm';
 import TravelEdit from './components/TravelEdit';
 import EntryList from './components/EntryList';
 import ImageGallery from './components/ImageGallery';
+import EntryEdit from './components/EntryEdit';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ export default function App() {
         <Stack.Screen name='TravelEdit' component={TravelEdit} options={{ title: 'Editar viagem' }} />
         <Stack.Screen name='EntryList' component={EntryList} options={{ title: 'Entradas Diárias' }} />
         <Stack.Screen name='ImageGallery' component={ImageGallery} options={{ title: 'Galeria' }} />
+        <Stack.Screen name='EntryEdit' component={EntryEdit} options={{ title: 'Editar entrada' }} />
       </Stack.Navigator>
       <StatusBar style="auto" />
       <Toast />

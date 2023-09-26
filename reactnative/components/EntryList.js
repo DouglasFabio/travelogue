@@ -35,6 +35,19 @@ const EntryList = ({ navigation, route }) => {
         fetchData();
     };
 
+    const handleEdit = (travel) => {
+        navigation.navigate('EntryEdit', { entryId: travel.id, visitedLocal: travel.visitedLocal, dateVisit: travel.dateVisit, description: travel.description, codTravel: travel.codTravel });
+      };
+    
+      const handleDelete = (id) => {
+        axios.delete(`${url}/${id}`)
+          .then(response => {
+            setData(data.filter(travel => travel.id !== id));
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      };
     return (
         <>
             <ScrollView
@@ -56,6 +69,8 @@ const EntryList = ({ navigation, route }) => {
                                     onPress={() => navigation.navigate('ImageGallery', { id: travel.id })}
                                     icon="image-multiple"
                                 />
+                                <IconButton onPress={() => handleEdit(travel)} icon="pencil" />
+                                <IconButton onPress={() => handleDelete(travel.id)} icon="delete" iconColor='red' />
                             </Card.Actions>
                         </Card>
                     ))}
