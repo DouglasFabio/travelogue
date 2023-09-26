@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 var urlEntrada = Uri.parse('https://10.0.2.2:7298/api/Entrada/');
+var urlEditaEntrada = Uri.parse('https://10.0.2.2:7298/api/EditaEntrada/');
 final client = http.Client();
 
 
@@ -41,6 +42,17 @@ Future<List> getEntry(String idViagem) async {
     throw Exception('Erro ao carregar');
   }
 
+}
+
+Future<List> getEntryEdit(String idEntry) async {
+  final url = '$urlEditaEntrada$idEntry';
+  var response = await http.get(Uri.parse(url));
+
+  if(response.statusCode == 200){
+    return jsonDecode(utf8.decode(response.bodyBytes));
+  }else{
+    throw Exception('Erro ao carregar');
+  }
 }
 
 Future<void> postEntry(Map<String, dynamic> formData) async {
