@@ -94,7 +94,7 @@ export default function EntryEdit({ route }) {
         const { status: galeriaStatus } = await ImagePicker.requestPermissionsAsync();
 
         if (cameraStatus !== 'granted' || galeriaStatus !== 'granted') {
-            alert('Desculpe, precisamos de permissões de câmera e galeria para fazer isso funcionar!');
+            alert('Desculpe, precisamos de permissões de câmera e galeria para realizar esta ação');
         }
     };
 
