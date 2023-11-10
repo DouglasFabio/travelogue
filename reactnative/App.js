@@ -9,10 +9,12 @@ import TravelEdit from './components/TravelEdit';
 import EntryList from './components/EntryList';
 import ImageGallery from './components/ImageGallery';
 import EntryEdit from './components/EntryEdit';
+import { pt, registerTranslation } from 'react-native-paper-dates';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  registerTranslation('pt-br',pt)
   return (
     <NavigationContainer>
       <Stack.Navigator>

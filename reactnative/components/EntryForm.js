@@ -92,7 +92,7 @@ export default function EntryForm({ route }) {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       result.assets.forEach(asset => {
         setMidiaPath([...midiaPath, asset.uri]);
       });
@@ -108,7 +108,7 @@ export default function EntryForm({ route }) {
         quality: 1,
       });
   
-      if (!result.cancelled) {
+      if (!result.canceled) {
         result.assets.forEach(asset => {
           setMidiaPath([...midiaPath, asset.uri]);
         });
