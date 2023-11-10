@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { EXPO_PUBLIC_API_URL_HTTP_E, EXPO_PUBLIC_API_URL_HTTP_EE } from '../env';
 import { date } from 'yup';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 export default function EntryEdit({ route }) {
     const [visitedLocal, setVisitedLocal] = useState(route.params.visitedLocal || '');
@@ -16,6 +17,14 @@ export default function EntryEdit({ route }) {
     const [midiaPath, setMidiaPath] = useState('');
     const [codTravel, setCodTravel] = useState(route.params.codTravel || '');
     const navigation = useNavigation();
+    const [autenticado, setAutenticado] = useState(false);
+
+    const autenticar = async () => {
+        const auth = await LocalAuthentication.authenticateAsync({
+            promptMessage: 'Por favor, realize a autenticação.'
+        });
+        setAutenticado(auth.success);
+    }
 
     let urlGet = EXPO_PUBLIC_API_URL_HTTP_EE;
     let urlPut = EXPO_PUBLIC_API_URL_HTTP_E;
@@ -74,16 +83,17 @@ export default function EntryEdit({ route }) {
                 midiaPath: midiaPathString,
                 codTravel: codTravel
             };
-
-            let response = await axios.put(`${urlPut}/${route.params.entryId}`, entryData);
-            Toast.show({
-                type: 'success',
-                text1: 'Sucesso',
-                text2: JSON.stringify(response.data),
-                position: 'bottom'
-            });
-            navigation.navigate('TravelList');
-
+            await autenticar();
+            if (autenticado) {
+                let response = await axios.put(`${urlPut}/${route.params.entryId}`, entryData);
+                Toast.show({
+                    type: 'success',
+                    text1: 'Sucesso',
+                    text2: JSON.stringify(response.data),
+                    position: 'bottom'
+                });
+                navigation.navigate('TravelList');
+            }
         }
         catch (error) {
             console.error(error);

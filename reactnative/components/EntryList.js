@@ -3,6 +3,7 @@ import { View, ScrollView, RefreshControl } from 'react-native';
 import { Avatar, Card, Button, IconButton, FAB } from 'react-native-paper';
 import axios from 'axios';
 import { EXPO_PUBLIC_API_URL_HTTP_E } from '../env';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 const EntryList = ({ navigation, route }) => {
 
@@ -10,6 +11,14 @@ const EntryList = ({ navigation, route }) => {
 
     const [data, setData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [autenticado, setAutenticado] = useState(false);
+
+    const autenticar = async () => {
+        const auth = await LocalAuthentication.authenticateAsync({
+            promptMessage: 'Por favor, realize a autenticação.'
+        });
+        setAutenticado(auth.success);
+    }
 
     useEffect(() => {
         fetchData();
@@ -27,7 +36,7 @@ const EntryList = ({ navigation, route }) => {
     };
 
     const AddEntry = () => {
-        navigation.navigate('EntryForm', {id: route.params.travelId});
+        navigation.navigate('EntryForm', { id: route.params.travelId });
     }
 
     const onRefresh = () => {
@@ -37,17 +46,20 @@ const EntryList = ({ navigation, route }) => {
 
     const handleEdit = (travel) => {
         navigation.navigate('EntryEdit', { entryId: travel.id, visitedLocal: travel.visitedLocal, dateVisit: travel.dateVisit, description: travel.description, codTravel: travel.codTravel });
-      };
-    
-      const handleDelete = (id) => {
-        axios.delete(`${url}/${id}`)
-          .then(response => {
-            setData(data.filter(travel => travel.id !== id));
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      };
+    };
+
+    const handleDelete = async (id) => {
+        await autenticar();
+        if (autenticado) {
+            axios.delete(`${url}/${id}`)
+                .then(response => {
+                    setData(data.filter(travel => travel.id !== id));
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    };
     return (
         <>
             <ScrollView

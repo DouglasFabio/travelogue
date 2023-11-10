@@ -6,11 +6,20 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { EXPO_PUBLIC_API_URL_HTTP_V } from '../env';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 export default function TravelEdit({ route }) {
   const [name, setName] = useState('');
   const [dateTravel, setDateTravel] = useState(route.params?.dateTravel || null);
   const [load, setLoad] = useState(false);
+  const [autenticado, setAutenticado] = useState(false);
+
+  const autenticar = async () => {
+    const auth = await LocalAuthentication.authenticateAsync({
+      promptMessage: 'Por favor, realize a autenticação.'
+    });
+    setAutenticado(auth.success);
+  }
 
   const navigation = useNavigation();
 
@@ -29,6 +38,7 @@ export default function TravelEdit({ route }) {
   }, [load]);
 
   const putTravel = async () => {
+    await autenticar();
     try {
       if (dateTravel === null) {
         Toast.show({
@@ -46,16 +56,17 @@ export default function TravelEdit({ route }) {
         name: name,
         dateTravel: formattedDate,
       };
-      let response = await axios.put(`${url}/${route.params.travelId}`, travelData);
-      Toast.show({
-        type: 'success',
-        text1: 'Sucesso',
-        text2: JSON.stringify(response.data),
-        position: 'bottom'
-      });
-      console.log(response.data);
-      navigation.navigate('TravelList');
-
+      if (autenticado) {
+        let response = await axios.put(`${url}/${route.params.travelId}`, travelData);
+        Toast.show({
+          type: 'success',
+          text1: 'Sucesso',
+          text2: JSON.stringify(response.data),
+          position: 'bottom'
+        });
+        navigation.navigate('TravelList');
+      }
+      
     }
     catch (error) {
       console.error(error);

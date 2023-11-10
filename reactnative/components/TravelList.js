@@ -11,13 +11,13 @@ const TravelList = ({ navigation }) => {
 
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [autenticado, setAutenticado] = useState(false); 
-  
-  const autenticar = async () => { 
-    const auth = await LocalAuthentication.authenticateAsync({ 
-      promptMessage: 'Por favor, realize a autenticação.' 
-    }); 
-    setAutenticado(auth.success); 
+  const [autenticado, setAutenticado] = useState(false);
+
+  const autenticar = async () => {
+    const auth = await LocalAuthentication.authenticateAsync({
+      promptMessage: 'Por favor, realize a autenticação.'
+    });
+    setAutenticado(auth.success);
   }
 
   useEffect(() => {
@@ -43,15 +43,17 @@ const TravelList = ({ navigation }) => {
     navigation.navigate('TravelEdit', { travelId: travel.id });
   };
 
-  const handleDelete = (id) => {
-
-    axios.delete(`${url}/${id}`)
-      .then(response => {
-        setData(data.filter(travel => travel.id !== id));
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  const handleDelete = async (id) => {
+    await autenticar();
+    if (autenticado) {
+      axios.delete(`${url}/${id}`)
+        .then(response => {
+          setData(data.filter(travel => travel.id !== id));
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   };
 
   const onRefresh = () => {
