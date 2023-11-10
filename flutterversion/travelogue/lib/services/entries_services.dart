@@ -4,13 +4,13 @@ import 'package:elegant_notification/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-var urlEntrada = Uri.parse('https://10.0.2.2:7298/api/Entrada/');
-var urlEditaEntrada = Uri.parse('https://10.0.2.2:7298/api/EditaEntrada/');
+var urlEntrada = Uri.parse('https://192.168.0.105:7298/api/Entrada/');
+var urlEditaEntrada = Uri.parse('https://192.168.0.105:7298/api/EditaEntrada/');
 final client = http.Client();
 
 
 Future<List> getImages(String idEntry) async {
-  final url = 'https://10.0.2.2:7298/api/Imagem/$idEntry';
+  final url = 'https://192.168.0.105:7298/api/Imagem/$idEntry';
   var response = await http.get(Uri.parse(url));
   
   if(response.statusCode == 200){

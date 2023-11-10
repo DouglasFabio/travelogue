@@ -14,18 +14,18 @@ class _TravelListState extends State<TravelList> {
   List<dynamic> _dados = [];
   final LocalAuthentication _localAuth = LocalAuthentication();
 
-  //Future<bool> _authenticateUser() async {
-  //  bool authenticated = false;
-  //  try {
-  //    authenticated = await _localAuth.authenticate(
-  //       localizedReason: 'Por favor, autentique para atualizar os dados',
-  //        options: const AuthenticationOptions(
-  //            useErrorDialogs: true, stickyAuth: true));
-  // } catch (e) {
-  //    print(e);
-  //  }
-  //  return authenticated;
-  //}
+  Future<bool> _authenticateUser() async {
+    bool authenticated = false;
+    try {
+      authenticated = await _localAuth.authenticate(
+         localizedReason: 'Por favor, autentique para atualizar os dados',
+          options: const AuthenticationOptions(
+              useErrorDialogs: true, stickyAuth: true));
+   } catch (e) {
+      print(e);
+    }
+    return authenticated;
+  }
 
   @override
   void initState() {
@@ -41,14 +41,14 @@ class _TravelListState extends State<TravelList> {
   }
 
   Future<void> _removerViagem(String id) async {
-    //bool didAuthenticate = await _authenticateUser();
+    bool didAuthenticate = await _authenticateUser();
 
-    //if (didAuthenticate) {
+    if (didAuthenticate) {
     await deleteTravel(id);
     _buscarDadosDaAPI();
-    //} else {
-      //  print('Falha na autenticação do usuário');
-      //}
+    } else {
+        print('Falha na autenticação do usuário');
+      }
   }
 
   @override

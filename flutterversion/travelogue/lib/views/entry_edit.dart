@@ -52,18 +52,18 @@ class _EntryEditState extends State<EntryEdit> {
     }
   }
 
-  //Future<bool> _authenticateUser() async {
-  //  bool authenticated = false;
-  //  try {
-  //    authenticated = await _localAuth.authenticate(
-  //       localizedReason: 'Por favor, autentique para atualizar os dados',
-  //        options: const AuthenticationOptions(
-  //            useErrorDialogs: true, stickyAuth: true));
-  // } catch (e) {
-  //    print(e);
-  //  }
-  //  return authenticated;
- // }
+  Future<bool> _authenticateUser() async {
+    bool authenticated = false;
+    try {
+      authenticated = await _localAuth.authenticate(
+         localizedReason: 'Por favor, autentique para atualizar os dados',
+          options: const AuthenticationOptions(
+              useErrorDialogs: true, stickyAuth: true));
+   } catch (e) {
+      print(e);
+    }
+    return authenticated;
+  }
 
   @override
   void didChangeDependencies() {
@@ -99,17 +99,17 @@ class _EntryEditState extends State<EntryEdit> {
         'codTravel': _codTravel
       };
 
-      //bool didAuthenticate = await _authenticateUser();
+      bool didAuthenticate = await _authenticateUser();
 
-      //if (didAuthenticate) {
+      if (didAuthenticate) {
         await putEntry(idEntry, formData);
         if (mounted) {
           Navigator.of(context)
               .popUntil(ModalRoute.withName(Navigator.defaultRouteName));
         }
-      //} else {
-      //  print('Falha na autenticação do usuário');
-      //}
+      } else {
+        print('Falha na autenticação do usuário');
+      }
     }
   }
 
