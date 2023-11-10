@@ -3,6 +3,7 @@ import { View, ScrollView, RefreshControl } from 'react-native';
 import { Avatar, Card, Button, IconButton, FAB } from 'react-native-paper';
 import axios from 'axios';
 import { EXPO_PUBLIC_API_URL_HTTP_V } from '../env';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 const TravelList = ({ navigation }) => {
 
@@ -10,6 +11,14 @@ const TravelList = ({ navigation }) => {
 
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [autenticado, setAutenticado] = useState(false); 
+  
+  const autenticar = async () => { 
+    const auth = await LocalAuthentication.authenticateAsync({ 
+      promptMessage: 'Por favor, realize a autenticação.' 
+    }); 
+    setAutenticado(auth.success); 
+  }
 
   useEffect(() => {
     fetchData();
@@ -36,7 +45,7 @@ const TravelList = ({ navigation }) => {
 
   const handleDelete = (id) => {
 
-    axios.delete(`${url}${id}`)
+    axios.delete(`${url}/${id}`)
       .then(response => {
         setData(data.filter(travel => travel.id !== id));
       })
